@@ -6,15 +6,21 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
+import de.nerogar.render.Camera;
+
 public class InputHandler {
 
 	private Vector2f mousePos;
 	private Vector2f mousePosD;
 	private boolean hideMouse;
 
+	private Ray MouseRay;
+
 	public InputHandler() {
 		mousePos = new Vector2f();
 		mousePosD = new Vector2f();
+
+		MouseRay = new Ray(new Vector3f(), new Vector3f());
 	}
 
 	public void update() {
@@ -94,6 +100,60 @@ public class InputHandler {
 			System.out.print(c);
 		}
 		System.out.println();
+	}
+
+	public void updateMousePositions(Camera camera, float fov) {
+		float height = (float) Display.getHeight();
+		float width = (float) Display.getWidth();
+		float fovMultY = (float) Math.tan(fov / 2f / 180f * Math.PI);
+		float fovMultX = (float) Math.tan(fov / 2f / 180f * Math.PI) / height * width;
+		float mouseX = (float) (Mouse.getX() / width * 2 - 1);
+		float mouseY = (float) (Mouse.getY() / height * 2 - 1);
+
+		/*float mouseRotSin = (float) Math.sin(mouseX * fov / 180f * Math.PI);
+		float mouseRotCos = (float) Math.cos(mouseX * fov / 180f * Math.PI);
+		float mouseRotDownSin = (float) Math.sin(mouseY * fov / 180f * Math.PI);
+		float mouseRotDownCos = (float) Math.cos(mouseY * fov / 180f * Math.PI);*/
+
+		float camRotSin = (float) Math.sin(camera.yaw / 180f * Math.PI);
+		float camRotCos = (float) Math.cos(camera.yaw / 180f * Math.PI);
+		float camRotDownSin = (float) Math.sin(camera.pitch / 180f * Math.PI);
+		float camRotDownCos = (float) Math.cos(camera.pitch / 180f * Math.PI);
+
+		Vector3f dirLoc = new Vector3f(0, 0, 0);
+
+		//Camera down Rotation:
+		dirLoc.setY(-camRotDownSin);
+		dirLoc.setZ(-camRotDownCos);
+
+		//Mouse Position Y:
+		dirLoc.addY(mouseY * camRotDownCos * fovMultY);
+		dirLoc.addZ(-mouseY * camRotDownSin * fovMultY);
+		//dirLoc.y += mouseY * camRotDownCos * fovMultY;
+		//dirLoc.z -= mouseY * camRotDownSin * fovMultY;
+
+		//Mouse Position X:
+
+		dirLoc.addX(mouseX * fovMultX);
+		//dirLoc.x += mouseX * fovMultX;
+
+		//Camera Rotation:
+
+		Vector3f dir = new Vector3f();
+
+		dir.setZ(camRotCos * dirLoc.getZ() + camRotSin * dirLoc.getX());
+		dir.setX(camRotCos * dirLoc.getX() - camRotSin * dirLoc.getZ());
+		dir.setY(dirLoc.getY());
+		//dir.z = camRotCos * dirLoc.z + camRotSin * dirLoc.x;
+		//dir.x = camRotCos * dirLoc.x - camRotSin * dirLoc.z;
+		//dir.y = dirLoc.y;
+
+		MouseRay.setDirection(dir);
+		MouseRay.start = new Vector3f(camera.x, camera.y, camera.z);
+	}
+	
+	public Ray getMouseRay(){
+		return MouseRay;
 	}
 
 	static {
