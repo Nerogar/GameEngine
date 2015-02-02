@@ -24,7 +24,7 @@ public class TextureLoader {
 	public static Texture2D loadTexture(String filename, String textureName) {
 		return loadTexture(filename, filename, InterpolationType.LINEAR);
 	}
-	
+
 	public static Texture2D loadTexture(String filename, InterpolationType interpolationType) {
 		return loadTexture(filename, filename, interpolationType);
 	}
@@ -36,13 +36,7 @@ public class TextureLoader {
 
 		try {
 			BufferedImage image = ImageIO.read(new File(filename));
-			IntBuffer buffer = BufferUtils.createIntBuffer(image.getWidth() * image.getHeight());
-			int[] pixels = image.getRGB(0, 0, image.getWidth(), image.getHeight(), null, 0, image.getWidth());
-			buffer.put(pixels);
-			buffer.rewind();
-			//System.out.println("loaded: "+filename);
-
-			retTexture = new Texture2D(textureName, image.getWidth(), image.getHeight(), buffer, interpolationType, DataType.BGRA_8_8_8_8I);
+			return loadTexture(image, textureName, interpolationType);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.err.println("Missing Texture: " + filename);
@@ -50,6 +44,14 @@ public class TextureLoader {
 
 		textureMap.put(filename, retTexture);
 		return retTexture;
+	}
+
+	public static Texture2D loadTexture(BufferedImage image, String textureName, InterpolationType interpolationType) {
+		IntBuffer buffer = BufferUtils.createIntBuffer(image.getWidth() * image.getHeight());
+		int[] pixels = image.getRGB(0, 0, image.getWidth(), image.getHeight(), null, 0, image.getWidth());
+		buffer.put(pixels);
+		buffer.rewind();
+		return new Texture2D(textureName, image.getWidth(), image.getHeight(), buffer, interpolationType, DataType.BGRA_8_8_8_8I);
 	}
 
 	protected static void unloadTexture(String filename) {
