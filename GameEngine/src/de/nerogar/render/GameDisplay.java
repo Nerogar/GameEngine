@@ -14,7 +14,7 @@ public class GameDisplay {
 	private DisplayMode[] availableDisplayModes;
 	private int currentDisplayMode;
 
-	private boolean depthTestEnabled;
+	private boolean depthTestEnabled = true;
 
 	public GameDisplay() throws LWJGLException {
 		initDisplay();
@@ -82,8 +82,8 @@ public class GameDisplay {
 		if (clearScreen) clearScreen();
 
 		if (screenProperties.enableDepthTest != depthTestEnabled) {
-			if (screenProperties.enableDepthTest) glDisable(GL_DEPTH_TEST);
-			else glEnable(GL_DEPTH_TEST);
+			if (screenProperties.enableDepthTest) glEnable(GL_DEPTH_TEST);
+			else glDisable(GL_DEPTH_TEST);
 			depthTestEnabled = screenProperties.enableDepthTest;
 		}
 	}
