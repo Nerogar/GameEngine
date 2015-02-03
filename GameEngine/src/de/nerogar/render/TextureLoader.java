@@ -36,7 +36,7 @@ public class TextureLoader {
 
 		try {
 			BufferedImage image = ImageIO.read(new File(filename));
-			return loadTexture(image, textureName, interpolationType);
+			retTexture = loadTexture(image, textureName, interpolationType);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.err.println("Missing Texture: " + filename);
