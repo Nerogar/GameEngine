@@ -14,6 +14,8 @@ public class GameDisplay {
 	private DisplayMode[] availableDisplayModes;
 	private int currentDisplayMode;
 
+	private boolean depthTestEnabled;
+
 	public GameDisplay() throws LWJGLException {
 		initDisplay();
 
@@ -50,6 +52,7 @@ public class GameDisplay {
 	private void initGL() {
 		glEnable(GL_TEXTURE_2D);
 		glEnable(GL_DEPTH_TEST);
+		depthTestEnabled = true;
 		glClearColor(0f, 0f, 0f, 1f);
 		setScreenProperties(ScreenProperties.defaultInstance, true);
 	}
@@ -73,9 +76,16 @@ public class GameDisplay {
 				setDisplayMode(screenProperties.getRenderWidth(), screenProperties.getRenderHeight());
 			}
 		}
+
 		if (screenProperties.camera != null) screenProperties.camera.transformGL();
+
 		if (clearScreen) clearScreen();
 
+		if (screenProperties.enableDepthTest != depthTestEnabled) {
+			if (screenProperties.enableDepthTest) glDisable(GL_DEPTH_TEST);
+			else glEnable(GL_DEPTH_TEST);
+			depthTestEnabled = screenProperties.enableDepthTest;
+		}
 	}
 
 	private void setOrtho(ScreenProperties renderProperties) {

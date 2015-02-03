@@ -13,6 +13,8 @@ public class ScreenProperties {
 	protected BaseCamera camera = null;
 	protected RenderTarget renderTarget = null;
 
+	protected boolean enableDepthTest = true;
+
 	public ScreenProperties() {
 	}
 
@@ -49,6 +51,10 @@ public class ScreenProperties {
 
 	public void setCamera(BaseCamera camera) {
 		this.camera = camera;
+	}
+
+	public void setDepthTest(boolean enableDepthTest) {
+		this.enableDepthTest = enableDepthTest;
 	}
 
 	static {
