@@ -2,19 +2,21 @@ package de.nerogar.render;
 
 import static org.lwjgl.opengl.GL11.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.util.glu.GLU;
 
+import de.nerogar.render.listener.DisplayResizeListener;
+
 public class GameDisplay {
 	private DisplayMode[] availableDisplayModes;
 	private int currentDisplayMode;
 
 	private boolean depthTestEnabled = true;
+	private List<DisplayResizeListener> displayResizeListener = new ArrayList<DisplayResizeListener>();
 
 	public GameDisplay() throws LWJGLException {
 		initDisplay();
@@ -73,7 +75,8 @@ public class GameDisplay {
 		} else {
 			RenderTarget.bindDefault();
 			if (screenProperties.getRenderWidth() != getDisplayMode().getWidth() && screenProperties.getRenderHeight() != getDisplayMode().getHeight()) {
-				setDisplayMode(screenProperties.getRenderWidth(), screenProperties.getRenderHeight());
+				boolean resolutionChanged = setDisplayMode(screenProperties.getRenderWidth(), screenProperties.getRenderHeight());
+				if (resolutionChanged) notifyDisplayResizeListener(getDisplayMode().getWidth(), getDisplayMode().getHeight());
 			}
 		}
 
@@ -140,6 +143,21 @@ public class GameDisplay {
 		Display.update();
 		clearScreen();
 		glLoadIdentity();
+	}
+
+	//Listener
+	public boolean addDisplayResizeListener(DisplayResizeListener listener) {
+		return displayResizeListener.add(listener);
+	}
+
+	public boolean removeButtonClickedListener(DisplayResizeListener listener) {
+		return displayResizeListener.remove(listener);
+	}
+
+	private void notifyDisplayResizeListener(int width, int height) {
+		for (DisplayResizeListener listener : displayResizeListener) {
+			listener.onResize(width, height);
+		}
 	}
 
 	public void cleanup() {
