@@ -34,6 +34,7 @@ public class RenderTarget {
 
 	private boolean useDepthTexture;
 	private Texture2D depthTexture;
+	private boolean depthTextureScheduled = false;
 
 	private List<Texture2D> textures;
 
@@ -43,12 +44,23 @@ public class RenderTarget {
 	}
 
 	protected void setScreenProperties(ScreenProperties screenProperties) {
+		if (depthTextureScheduled) {
+			activateDepthTexture();
+			depthTextureScheduled = false;
+		}
+
 		this.screenProperties = screenProperties;
 		setResolution(screenProperties.getRenderWidth(), screenProperties.getRenderHeight());
 	}
 
 	public void activateDepthTexture() {
+		if (screenProperties == null) {
+			depthTextureScheduled = true;
+			return;
+		}
+
 		if (useDepthTexture) return;
+
 		useDepthTexture = true;
 		depthTexture = new Texture2D("depth", 0, 0, null, InterpolationType.NEAREST, DataType.DEPTH);
 		setResolution(screenProperties.getRenderWidth(), screenProperties.getRenderHeight());
