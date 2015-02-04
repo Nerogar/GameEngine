@@ -48,6 +48,7 @@ public class RenderTarget {
 	}
 
 	public void activateDepthTexture() {
+		if (useDepthTexture) return;
 		useDepthTexture = true;
 		depthTexture = new Texture2D("depth", 0, 0, null, InterpolationType.NEAREST, DataType.DEPTH);
 		setResolution(screenProperties.getRenderWidth(), screenProperties.getRenderHeight());
@@ -113,7 +114,6 @@ public class RenderTarget {
 	public void bind() {
 		if (!initialized) throw new IllegalStateException("RenderScene not initialized");
 		glBindFramebuffer(GL_FRAMEBUFFER, framebufferID);
-
 	}
 
 	public void cleanup() {
@@ -122,6 +122,7 @@ public class RenderTarget {
 			texture.cleanup();
 		}
 
+		glDeleteFramebuffers(framebufferID);
 	}
 
 	public static void bindDefault() {
