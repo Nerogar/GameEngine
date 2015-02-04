@@ -56,8 +56,11 @@ public class RenderTarget {
 
 	private void addTextures(Texture2D... textures) {
 		for (Texture2D texture : textures) {
-			this.textures.add(texture);
+			if (getTexture(texture.getName()) == null) {
+				this.textures.add(texture);
+			}
 		}
+
 		if (screenProperties != null) setResolution(screenProperties.getRenderWidth(), screenProperties.getRenderHeight());
 	}
 
@@ -67,6 +70,15 @@ public class RenderTarget {
 		}
 
 		return null;
+	}
+
+	public void removeTexture(String name) {
+		for (int i = 0; i < textures.size(); i++) {
+			if (textures.get(i).getName().equals(name)) {
+				textures.remove(i);
+				return;
+			}
+		}
 	}
 
 	private void setResolution(int width, int height) {
