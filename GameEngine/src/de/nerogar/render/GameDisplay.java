@@ -82,7 +82,7 @@ public class GameDisplay {
 
 		if (screenProperties.camera != null) screenProperties.camera.transformGL();
 
-		if (clearScreen) clearScreen();
+		if (clearScreen) clearScreen(screenProperties);
 
 		if (screenProperties.enableDepthTest != depthTestEnabled) {
 			if (screenProperties.enableDepthTest) glEnable(GL_DEPTH_TEST);
@@ -105,7 +105,8 @@ public class GameDisplay {
 		glMatrixMode(GL_MODELVIEW); // Select The Modelview Matrix
 	}
 
-	private void clearScreen() {
+	private void clearScreen(ScreenProperties screenProperties) {
+		glClearColor(screenProperties.clearColorR, screenProperties.clearColorG, screenProperties.clearColorB, screenProperties.clearColorA);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
@@ -141,7 +142,6 @@ public class GameDisplay {
 
 	public void update() {
 		Display.update();
-		clearScreen();
 		glLoadIdentity();
 	}
 

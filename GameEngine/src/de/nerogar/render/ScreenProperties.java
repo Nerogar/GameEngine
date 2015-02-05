@@ -15,12 +15,24 @@ public class ScreenProperties {
 
 	protected boolean enableDepthTest = true;
 
+	protected float clearColorR = 0.0f;
+	protected float clearColorG = 0.0f;
+	protected float clearColorB = 0.0f;
+	protected float clearColorA = 1.0f;
+
 	public ScreenProperties() {
 	}
 
 	public void setScreenDimension(int renderWidth, int renderHeight) {
 		this.renderWidth = renderWidth;
 		this.renderHeight = renderHeight;
+	}
+
+	public void setClearColor(float red, float green, float blue, float alpha) {
+		this.clearColorR = red;
+		this.clearColorG = green;
+		this.clearColorB = blue;
+		this.clearColorA = alpha;
 	}
 
 	public void setRenderTarget(RenderTarget renderTarget) {

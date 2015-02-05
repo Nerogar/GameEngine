@@ -59,6 +59,8 @@ public class Texture2D {
 	private InterpolationType interpolationType;
 	private DataType dataType;
 
+	private boolean initialized;
+
 	public Texture2D(String name, int width, int height) {
 		this(name, width, height, null, InterpolationType.LINEAR, DataType.BGRA_8_8_8_8I);
 	}
@@ -73,7 +75,9 @@ public class Texture2D {
 		createTexture(colorBuffer);
 	}
 
-	public void createTexture(IntBuffer colorBuffer) {
+	protected void createTexture(IntBuffer colorBuffer) {
+		if (initialized) cleanup();
+
 		id = glGenTextures();
 		bind();
 
@@ -81,6 +85,8 @@ public class Texture2D {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, interpolationType.openglConstant);
 
 		glTexImage2D(GL_TEXTURE_2D, 0, dataType.internal, width, height, 0, dataType.format, dataType.type, colorBuffer);
+
+		initialized = true;
 	}
 
 	public int getID() {
