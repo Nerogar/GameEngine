@@ -79,6 +79,7 @@ public class Texture2D {
 		if (initialized) cleanup();
 
 		id = glGenTextures();
+
 		bind();
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, interpolationType.openglConstant);
@@ -130,6 +131,12 @@ public class Texture2D {
 	public void cleanup() {
 		glDeleteTextures(id);
 		TextureLoader.unloadTexture(filename);
+		initialized = false;
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		if (initialized) System.err.println("Texture not cleaned up. name: " + name);
 	}
 
 }

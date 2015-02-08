@@ -53,7 +53,6 @@ public class RenderTarget {
 	private void activateDepthTexture() {
 		useDepthTexture = true;
 		depthTexture = new Texture2D("depth", 0, 0, null, InterpolationType.NEAREST, DataType.DEPTH);
-		//setResolution(screenProperties.getRenderWidth(), screenProperties.getRenderHeight());
 	}
 
 	private void addTextures(Texture2D... textures) {
@@ -131,12 +130,17 @@ public class RenderTarget {
 	}
 
 	public void cleanup() {
-		if (useDepthTexture) depthTexture.cleanup();
+		if (useDepthTexture) {
+			depthTexture.cleanup();
+			useDepthTexture = false;
+		}
+
 		for (Texture2D texture : textures) {
 			texture.cleanup();
 		}
 
 		glDeleteFramebuffers(framebufferID);
+		initialized = false;
 	}
 
 	public static void bindDefault() {
@@ -145,6 +149,11 @@ public class RenderTarget {
 
 	public int getFramebufferID() {
 		return framebufferID;
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		if (initialized) System.err.println("render Target not cleaned up. id: " + framebufferID);
 	}
 
 }
