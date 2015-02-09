@@ -110,6 +110,12 @@ public abstract class Renderable {
 
 	private void cleanup() {
 		glDeleteBuffers(vboHandle);
+		vboInitialized = false;
 	}
 
+	@Override
+	protected void finalize() throws Throwable {
+		if (vboInitialized) System.err.println("VBO not cleaned up. id: " + vboHandle);
+	}
+	
 }
