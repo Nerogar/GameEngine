@@ -25,8 +25,12 @@ public class MathHelper {
 			sinTable[i] = (float) Math.sin((TAU) * (float) (i / LOOKUP_TABLE_LENGTH));
 		}
 	}*/
-	
+
 	public static float clamp(float val, float min, float max) {
+		return Math.min(Math.max(min, val), max);
+	}
+
+	public static int clamp(int val, int min, int max) {
 		return Math.min(Math.max(min, val), max);
 	}
 
