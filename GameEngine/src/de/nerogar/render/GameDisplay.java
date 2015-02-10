@@ -34,7 +34,7 @@ public class GameDisplay {
 		ArrayList<DisplayMode> allDisplayModesSorted = new ArrayList<DisplayMode>();
 
 		for (DisplayMode dm : allDisplayModes) {
-			if (dm.getFrequency() == Display.getDesktopDisplayMode().getFrequency() && dm.getBitsPerPixel() == Display.getDesktopDisplayMode().getBitsPerPixel()) {
+			if (/*dm.getFrequency() == Display.getDesktopDisplayMode().getFrequency() && */dm.getBitsPerPixel() == Display.getDesktopDisplayMode().getBitsPerPixel()) {
 				allDisplayModesSorted.add(dm);
 			}
 		}
@@ -44,8 +44,10 @@ public class GameDisplay {
 		Arrays.sort(availableDisplayModes, (a, b) -> {
 			if (a.getWidth() != b.getWidth()) {
 				return a.getWidth() - b.getWidth();
-			} else {
+			} else if (a.getHeight() != b.getHeight()) {
 				return a.getHeight() - b.getHeight();
+			} else {
+				return a.getFrequency() - b.getFrequency();
 			}
 		});
 
