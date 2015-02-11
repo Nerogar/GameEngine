@@ -16,14 +16,14 @@ import de.nerogar.render.Texture2D.InterpolationType;
 public class RenderTarget {
 
 	private static final int[] glColorAttachments = {
-			GL_COLOR_ATTACHMENT0,
-			GL_COLOR_ATTACHMENT1,
-			GL_COLOR_ATTACHMENT2,
-			GL_COLOR_ATTACHMENT3,
-			GL_COLOR_ATTACHMENT4,
-			GL_COLOR_ATTACHMENT5,
-			GL_COLOR_ATTACHMENT6,
-			GL_COLOR_ATTACHMENT7
+			GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1,
+			GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3,
+			GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5,
+			GL_COLOR_ATTACHMENT6, GL_COLOR_ATTACHMENT7,
+			GL_COLOR_ATTACHMENT8, GL_COLOR_ATTACHMENT9,
+			GL_COLOR_ATTACHMENT10, GL_COLOR_ATTACHMENT11,
+			GL_COLOR_ATTACHMENT12, GL_COLOR_ATTACHMENT13,
+			GL_COLOR_ATTACHMENT14, GL_COLOR_ATTACHMENT15,
 	};
 
 	private boolean initialized;
@@ -66,6 +66,7 @@ public class RenderTarget {
 	}
 
 	public Texture2D getTexture(String name) {
+		if (name.equals("depth")) return depthTexture;
 		for (Texture2D texture : textures) {
 			if (texture.getName().equals(name)) return texture;
 		}

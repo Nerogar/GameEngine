@@ -1,9 +1,5 @@
 package de.nerogar.util;
 
-import java.nio.FloatBuffer;
-
-import org.lwjgl.BufferUtils;
-
 public class Color {
 
 	float[] colors;

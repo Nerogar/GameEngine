@@ -25,7 +25,7 @@ public class PhysicsSpace {
 		staticBodys = new ArrayList<PhysicsBody>();
 		bodies = new ArrayList<PhysicsBody>();
 
-		debugTexture = TextureLoader.loadTexture("res/textures/test3.png", "debug");
+		//debugTexture = TextureLoader.loadTexture("res/textures/test3.png", "debug");
 	}
 
 	public void addStaticBody(PhysicsBody staticBody) {
