@@ -160,11 +160,7 @@ public class WavefrontLoader {
 			normalsTriangles[i * 9 + 8] = normals.get(norm[2] - 1)[2];
 		}
 
-		object.setVertexData(verticesTriangles, 3);
-		object.setTextureData(texCoordsTriangles, 2);
-		object.setNormalData(normalsTriangles, 3);
-
-		object.initVBO();
+		object.initVBO(verticesTriangles, 3, texCoordsTriangles, 2, normalsTriangles, 3);
 	}
 
 	private static void addVertex(float f1, float f2, float f3) {
