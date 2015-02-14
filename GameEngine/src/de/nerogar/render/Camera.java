@@ -61,11 +61,11 @@ public class Camera extends BaseCamera {
 	private void recalcCameraRay() {
 		double conv = Math.PI / 180;
 
-		float x = (float) (Math.cos((pitch) * conv) * Math.sin(yaw * conv));
-		float y = (float) (-Math.sin((pitch) * conv));
-		float z = (float) (-Math.cos((pitch) * conv) * Math.cos(yaw * conv));
+		float dirX = (float) (Math.cos((pitch) * conv) * Math.sin(yaw * conv));
+		float dirY = (float) (-Math.sin((pitch) * conv));
+		float dirZ = (float) (-Math.cos((pitch) * conv) * Math.cos(yaw * conv));
 
-		camRay = new Ray(new Vector3f(x, y, z), new Vector3f(x, y, z));
+		camRay = new Ray(new Vector3f(x, y, z), new Vector3f(dirX, dirY, dirZ));
 	}
 
 	public Ray getCameraRay() {
