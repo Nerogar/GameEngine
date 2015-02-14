@@ -149,7 +149,7 @@ public class InputHandler {
 		//dir.y = dirLoc.y;
 
 		MouseRay.setDirection(dir);
-		MouseRay.start = new Vector3f(camera.x, camera.y, camera.z);
+		MouseRay.setStart(new Vector3f(camera.x, camera.y, camera.z));
 	}
 	
 	public Ray getMouseRay(){

@@ -3,7 +3,7 @@ package de.nerogar.util;
 import de.nerogar.physics.PhysicsBody;
 
 public class Ray {
-	public Vectorf<?> start;
+	private Vectorf<?> start;
 	/**normalized direction*/
 	private Vectorf<?> direction;
 	private Vectorf<?> inverseDirection;
@@ -56,6 +56,23 @@ public class Ray {
 			inverseDirection.set(i, 1f / direction.get(i));
 		}
 
+	}
+
+	public void setStart(Vectorf<?> start) {
+		this.start = start;
+	}
+
+	public Vectorf<?> getStart() {
+		return start;
+	}
+
+	public Vectorf<?> getDirection() {
+		return direction;
+	}
+
+	@Override
+	public String toString() {
+		return "[start: " + start + " direction: " + direction + "]";
 	}
 
 	/*public RayIntersection getIntersectionPoint(PhysicsBody body) {
