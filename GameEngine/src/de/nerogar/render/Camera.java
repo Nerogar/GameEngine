@@ -4,10 +4,14 @@ import java.util.Locale;
 
 import org.lwjgl.opengl.GL11;
 
+import de.nerogar.util.Ray;
+import de.nerogar.util.Vector3f;
+
 public class Camera extends BaseCamera {
 
 	public float yaw, pitch, roll;
 	public float x, y, z;
+	private Ray camRay;
 
 	@Override
 	protected void transformGL() {
@@ -54,12 +58,38 @@ public class Camera extends BaseCamera {
 
 	}
 
-	/*private FloatBuffer toFloatBuffer(float[] array) {
-		FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(array.length);
-		floatBuffer.put(array);
-		floatBuffer.flip();
-		return floatBuffer;
-	}*/
+	private void recalcCameraRay() {
+		double conv = Math.PI / 180;
+
+		float x = (float) (Math.cos((pitch) * conv) * Math.sin(yaw * conv));
+		float y = (float) (-Math.sin((pitch) * conv));
+		float z = (float) (-Math.cos((pitch) * conv) * Math.cos(yaw * conv));
+
+		camRay = new Ray(new Vector3f(x, y, z), new Vector3f(x, y, z));
+	}
+
+	public Ray getCameraRay() {
+		if(camRay == null) recalcCameraRay();
+		return camRay;
+	}
+
+	public void setYaw(float yaw) {this.yaw = yaw; camRay = null;}
+	public float getYaw() {return yaw;}
+
+	public void setPitch(float pitch) {this.pitch = pitch; camRay = null;}
+	public float getPitch() {return pitch;}
+
+	public void setRoll(float roll) {this.roll = roll; camRay = null;}
+	public float getRoll() {return roll;}
+
+	public void setX(float x) {this.x = x; camRay = null;}
+	public float getX() {return x;}
+
+	public void setY(float y) {this.y = y; camRay = null;}
+	public float getY() {return y;}
+
+	public void setZ(float z) {this.z = z; camRay = null;}
+	public float getZ() {return z;}
 
 	@Override
 	public String toString() {
