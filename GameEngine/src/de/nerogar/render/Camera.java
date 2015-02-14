@@ -9,8 +9,8 @@ import de.nerogar.util.Vector3f;
 
 public class Camera extends BaseCamera {
 
-	public float yaw, pitch, roll;
-	public float x, y, z;
+	private float yaw, pitch, roll;
+	private float x, y, z;
 	private Ray camRay;
 
 	@Override
