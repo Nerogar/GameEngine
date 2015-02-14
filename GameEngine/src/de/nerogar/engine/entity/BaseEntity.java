@@ -7,17 +7,22 @@ import de.nerogar.util.Vectorf;
 
 public abstract class BaseEntity extends PhysicsBody {
 
-	private static int MAX_ID;
-	private int id;
+	private static long MAX_ID;
+	private long id;
 	protected BaseWorld world;
 	private boolean removeFromWorld;
 
 	public BaseEntity(BoundingAABB bounding, Vectorf<?> position) {
-		super(bounding, position);
-		id = getNextID();
+		this(getNextID(), bounding, position);
 	}
 
-	public int getID() {
+	public BaseEntity(long id, BoundingAABB bounding, Vectorf<?> position) {
+		super(bounding, position);
+		if (id > MAX_ID) MAX_ID = id;
+		this.id = id;
+	}
+
+	public long getID() {
 		return id;
 	}
 
@@ -44,7 +49,7 @@ public abstract class BaseEntity extends PhysicsBody {
 		return removeFromWorld;
 	}
 
-	private int getNextID() {
+	protected static long getNextID() {
 		MAX_ID++;
 		return MAX_ID;
 	}
