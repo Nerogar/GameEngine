@@ -1,5 +1,7 @@
 package de.nerogar.engine;
 
+import java.util.List;
+
 import de.nerogar.engine.entity.BaseEntity;
 import de.nerogar.physics.PhysicsSpace;
 import de.nerogar.util.Vectorf;
@@ -15,12 +17,14 @@ public abstract class BaseWorld<T extends Vectorf<T>> {
 		entityList = new EntityList<T>();
 	}
 
-	public void update(float timeDelta) {
-		entityList.update(timeDelta);
+	public List<UpdateEvent> update(float timeDelta) {
+		List<UpdateEvent> events = entityList.update(timeDelta);
 
 		if (!isStatic) {
 			physicsSpace.update(timeDelta);
 		}
+
+		return events;
 	}
 
 	public void render() {
