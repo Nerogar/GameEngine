@@ -37,7 +37,21 @@ public class EntityList<T extends Vectorf<T>> {
 		entities.sort((a, b) -> (int) (a.getID() - b.getID()));
 	}
 
-	public BaseEntity<T> getBuilding(long id) {
+	public List<BaseEntity<T>> getEntitiesWithin(T posSmall, T posBig) {
+		List<BaseEntity<T>> candidates = new ArrayList<BaseEntity<T>>();
+
+		entityLoop: for (BaseEntity<T> entity : entities) {
+			for (int i = 0; i < entity.getPosition().getComponentCount(); i++) {
+				if (entity.getPosition().get(i) < posSmall.get(i) || entity.getPosition().get(i) > posBig.get(i)) continue entityLoop;
+			}
+
+			candidates.add(entity);
+		}
+
+		return candidates;
+	}
+
+	public BaseEntity<T> getEntity(long id) {
 
 		//binary serch
 		int l = 0;
