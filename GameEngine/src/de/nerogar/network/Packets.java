@@ -15,6 +15,7 @@ public class Packets {
 		public int id;
 
 		public PacketContainer(int id, int channelID, Class<? extends Packet> packetClass) {
+			this.id = id;
 			this.channelID = channelID;
 			this.packetClass = packetClass;
 		}
