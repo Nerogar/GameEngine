@@ -15,7 +15,7 @@ public class PacketConnectionInfo extends Packet {
 
 	@Override
 	public void fromByteArray(byte[] data) {
-		version = ByteBuffer.allocate(4).put(data).getInt();
+		version = ByteBuffer.wrap(data).getInt();
 	}
 
 	@Override
