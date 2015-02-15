@@ -14,13 +14,13 @@ public class InputHandler {
 	private Vector2f mousePosD;
 	private boolean hideMouse;
 
-	private Ray MouseRay;
+	private Ray<Vector3f> mouseRay;
 
 	public InputHandler() {
 		mousePos = new Vector2f();
 		mousePosD = new Vector2f();
 
-		MouseRay = new Ray(new Vector3f(), new Vector3f());
+		mouseRay = new Ray<Vector3f>(new Vector3f(), new Vector3f());
 	}
 
 	public void update() {
@@ -148,12 +148,12 @@ public class InputHandler {
 		//dir.x = camRotCos * dirLoc.x - camRotSin * dirLoc.z;
 		//dir.y = dirLoc.y;
 
-		MouseRay.setDirection(dir);
-		MouseRay.setStart(new Vector3f(camera.getX(), camera.getY(), camera.getZ()));
+		mouseRay.setDirection(dir);
+		mouseRay.setStart(new Vector3f(camera.getX(), camera.getY(), camera.getZ()));
 	}
 	
-	public Ray getMouseRay(){
-		return MouseRay;
+	public Ray<Vector3f> getMouseRay(){
+		return mouseRay;
 	}
 
 	static {

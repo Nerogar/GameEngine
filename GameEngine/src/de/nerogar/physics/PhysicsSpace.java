@@ -5,14 +5,13 @@ import static org.lwjgl.opengl.GL11.*;
 import java.util.ArrayList;
 
 import de.nerogar.render.Texture2D;
-import de.nerogar.render.TextureLoader;
 import de.nerogar.util.*;
 
-public class PhysicsSpace {
-	private final Vectorf<?> DIMENSION;
+public class PhysicsSpace<T extends Vectorf<T>> {
+	private final T DIMENSION;
 
-	private ArrayList<PhysicsBody> staticBodys;
-	private ArrayList<PhysicsBody> bodies;
+	private ArrayList<PhysicsBody<T>> staticBodys;
+	private ArrayList<PhysicsBody<T>> bodies;
 
 	private final float NOT_MOVING_THRESHOLD = 0.001f;
 
@@ -20,20 +19,20 @@ public class PhysicsSpace {
 	public Vectorf<?> gravity = new Vector3f(0f, -10f, 0f);
 	private Texture2D debugTexture;
 
-	public PhysicsSpace(Vectorf<?> dimension) {
+	public PhysicsSpace(T dimension) {
 		this.DIMENSION = dimension;
-		staticBodys = new ArrayList<PhysicsBody>();
-		bodies = new ArrayList<PhysicsBody>();
+		staticBodys = new ArrayList<PhysicsBody<T>>();
+		bodies = new ArrayList<PhysicsBody<T>>();
 
 		//debugTexture = TextureLoader.loadTexture("res/textures/test3.png", "debug");
 	}
 
-	public void addStaticBody(PhysicsBody staticBody) {
+	public void addStaticBody(PhysicsBody<T> staticBody) {
 		staticBody.setStatic(true);
 		staticBodys.add(staticBody);
 	}
 
-	public void addBody(PhysicsBody body) {
+	public void addBody(PhysicsBody<T> body) {
 		body.setStatic(false);
 		bodies.add(body);
 	}
@@ -45,16 +44,16 @@ public class PhysicsSpace {
 
 	public void update(float timeDelta) {
 		//TODO debug start
-		for (PhysicsBody pb : bodies) {
+		for (PhysicsBody<T> pb : bodies) {
 			//System.out.print(pb.getPosition().get(1) + ";  " + pb.isStaticInAxis(1) + " | ");
 		}
 		//System.out.println();
 		//debug end
 
-		Vectorf<?> resetPos = DIMENSION.newInstance(); //to reset after intersection calculation
-		Vectorf<?> calculationVel = DIMENSION.newInstance(); //to calculate collisions
+		T resetPos = DIMENSION.newInstance(); //to reset after intersection calculation
+		T calculationVel = DIMENSION.newInstance(); //to calculate collisions
 
-		for (PhysicsBody body : bodies) {
+		for (PhysicsBody<T> body : bodies) {
 			//TODO calc static (broken)
 			body.clearStaticAxis();
 
@@ -65,11 +64,11 @@ public class PhysicsSpace {
 			body.getPosition().add(body.getVelocity().multiplied(timeDelta));
 
 			calculationVel.set(body.getVelocity());
-			ArrayList<PhysicsBody> frictionBodies = getIntersecting(body); //all colliding bodies
-			ArrayList<InteractingBody> interactingBodies = new ArrayList<InteractingBody>(); //all colliding bodies in a wrapper class
+			ArrayList<PhysicsBody<T>> frictionBodies = getIntersecting(body); //all colliding bodies
+			ArrayList<InteractingBody<T>> interactingBodies = new ArrayList<InteractingBody<T>>(); //all colliding bodies in a wrapper class
 
-			for (PhysicsBody frictionBody : frictionBodies) {
-				InteractingBody interactingBody = new InteractingBody();
+			for (PhysicsBody<T> frictionBody : frictionBodies) {
+				InteractingBody<T> interactingBody = new InteractingBody<T>();
 				interactingBody.interactingDirection = getIntersectionDirection(body, calculationVel, frictionBody);
 				interactingBody.body = frictionBody;
 				interactingBodies.add(interactingBody);
@@ -84,18 +83,18 @@ public class PhysicsSpace {
 			body.getPosition().set(resetPos);
 			body.getPosition().add(body.getVelocity().multiplied(timeDelta));
 
-			ArrayList<PhysicsBody> collidingBodies = getIntersecting(body);
+			ArrayList<PhysicsBody<T>> collidingBodies = getIntersecting(body);
 
-			for (PhysicsBody collidingBody : collidingBodies) {
-				InteractingBody interactingBody = null;
-				for (InteractingBody temp : interactingBodies) {
+			for (PhysicsBody<T> collidingBody : collidingBodies) {
+				InteractingBody<T> interactingBody = null;
+				for (InteractingBody<T> temp : interactingBodies) {
 					if (temp.equals(collidingBody)) {
 						interactingBody = temp;
 					}
 				}
 
 				if (interactingBody == null) {
-					interactingBody = new InteractingBody();
+					interactingBody = new InteractingBody<T>();
 					interactingBody.body = collidingBody;
 					interactingBody.interactingDirection = getIntersectionDirection(body, calculationVel, collidingBody);
 				}
@@ -119,7 +118,7 @@ public class PhysicsSpace {
 		}
 	}
 
-	private void updateBody(float timeDelta, PhysicsBody body) {
+	private void updateBody(float timeDelta, PhysicsBody<T> body) {
 		//body.getVelocity().add((getGravity().multiplied(timeDelta)));
 		//body.getPosition().add(body.getVelocity().multiplied(timeDelta));
 		/*ArrayList<PhysicsBody> intersectingBodies = getIntersecting(body);
@@ -136,16 +135,16 @@ public class PhysicsSpace {
 
 	}
 
-	private ArrayList<PhysicsBody> getIntersecting(PhysicsBody body) {
-		ArrayList<PhysicsBody> intersectingBodies = new ArrayList<PhysicsBody>();
+	private ArrayList<PhysicsBody<T>> getIntersecting(PhysicsBody<T> body) {
+		ArrayList<PhysicsBody<T>> intersectingBodies = new ArrayList<PhysicsBody<T>>();
 
-		for (PhysicsBody staticBody : staticBodys) {
+		for (PhysicsBody<T> staticBody : staticBodys) {
 			if (body.intersects(staticBody)) {
 				intersectingBodies.add(staticBody);
 			}
 		}
 
-		for (PhysicsBody listBody : bodies) {
+		for (PhysicsBody<T> listBody : bodies) {
 			if (listBody != body && body.intersects(listBody)) {
 				intersectingBodies.add(listBody);
 			}
@@ -184,19 +183,19 @@ public class PhysicsSpace {
 		}
 	}*/
 
-	public RayIntersection getIntersecting(Ray ray) {
-		ArrayList<RayIntersection> intersectingBodies = new ArrayList<RayIntersection>();
+	public RayIntersection<T> getIntersecting(Ray<T> ray) {
+		ArrayList<RayIntersection<T>> intersectingBodies = new ArrayList<RayIntersection<T>>();
 
 		//TODO change to partitioned space
-		for (PhysicsBody staticBody : staticBodys) {
-			RayIntersection intersection = ray.getIntersectionPoint(staticBody);
+		for (PhysicsBody<T> staticBody : staticBodys) {
+			RayIntersection<T> intersection = ray.getIntersectionPoint(staticBody);
 			if (intersection != null) {
 				intersectingBodies.add(intersection);
 			}
 		}
 
-		for (PhysicsBody listBody : bodies) {
-			RayIntersection intersection = ray.getIntersectionPoint(listBody);
+		for (PhysicsBody<T> listBody : bodies) {
+			RayIntersection<T> intersection = ray.getIntersectionPoint(listBody);
 			if (intersection != null) {
 				intersectingBodies.add(intersection);
 			}
@@ -215,21 +214,21 @@ public class PhysicsSpace {
 		}
 	}
 
-	public PhysicsBody getIntersecting(Vectorf<?> point) {
+	public PhysicsBody<T> getIntersecting(T point) {
 		//TODO change to partitioned space
-		for (PhysicsBody staticBody : staticBodys) {
+		for (PhysicsBody<T> staticBody : staticBodys) {
 			if (staticBody.intersects(point)) { return staticBody; }
 		}
 
-		for (PhysicsBody listBody : bodies) {
+		for (PhysicsBody<T> listBody : bodies) {
 			if (listBody.intersects(point)) { return listBody; }
 		}
 
 		return null;
 	}
 
-	public static int getIntersectionDirection(PhysicsBody movingBody, Vectorf<?> velocity, PhysicsBody intersectedBody) {
-		Vector3f intersectionVolume = new Vector3f();
+	public int getIntersectionDirection(PhysicsBody<T> movingBody, T velocity, PhysicsBody<T> intersectedBody) {
+		T intersectionVolume = velocity.newInstance();
 
 		for (int axis = 0; axis < velocity.getComponentCount(); axis++) {
 			if (velocity.get(axis) < 0) {
@@ -248,19 +247,19 @@ public class PhysicsSpace {
 	}
 
 	public void render() {
-		for (PhysicsBody body : staticBodys) {
+		for (PhysicsBody<T> body : staticBodys) {
 			//renderAABB(body.bounding, body.getPosition(), 1f, 1f, 1f);
 			renderTop(body.bounding, body.getPosition());
 		}
 
-		for (PhysicsBody body : bodies) {
+		for (PhysicsBody<T> body : bodies) {
 			//renderAABB(body.bounding, body.getPosition(), 1f, 0f, 0f);
 			renderTop(body.bounding, body.getPosition());
 		}
 
 	}
 
-	private void renderAABB(BoundingAABB boundAABB, Vector3f offset, float r, float g, float b) {
+	private void renderAABB(BoundingAABB<T> boundAABB, Vector3f offset, float r, float g, float b) {
 		glColor3f(r, g, b);
 
 		glPushMatrix();
@@ -315,7 +314,7 @@ public class PhysicsSpace {
 		glColor3f(1f, 1f, 1f);
 	}
 
-	private void renderTop(BoundingAABB boundAABB, Vectorf<?> offset) {
+	private void renderTop(BoundingAABB<T> boundAABB, T offset) {
 		glPushMatrix();
 		glTranslatef(offset.get(0), offset.get(1), offset.get(2));
 

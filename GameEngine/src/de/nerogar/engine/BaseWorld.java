@@ -2,18 +2,17 @@ package de.nerogar.engine;
 
 import de.nerogar.engine.entity.BaseEntity;
 import de.nerogar.physics.PhysicsSpace;
-import de.nerogar.util.Vector3f;
 import de.nerogar.util.Vectorf;
 
-public abstract class BaseWorld {
+public abstract class BaseWorld<T extends Vectorf<T>> {
 
-	protected PhysicsSpace physicsSpace;
-	protected EntityList entityList;
+	protected PhysicsSpace<T> physicsSpace;
+	protected EntityList<T> entityList;
 	public boolean isStatic;
 
-	public BaseWorld(Vectorf<?> dimension) {
-		physicsSpace = new PhysicsSpace(dimension);
-		entityList = new EntityList();
+	public BaseWorld(T dimension) {
+		physicsSpace = new PhysicsSpace<T>(dimension);
+		entityList = new EntityList<T>();
 	}
 
 	public void update(float timeDelta) {
@@ -29,7 +28,7 @@ public abstract class BaseWorld {
 		entityList.render();
 	}
 
-	public void spawnEntity(BaseEntity entity, Vector3f pos) {
+	public void spawnEntity(BaseEntity<T> entity, T pos) {
 		entity.setWorld(this);
 		if (pos != null) entity.teleport(pos);
 		entityList.addEntity(entity);
@@ -41,11 +40,11 @@ public abstract class BaseWorld {
 		entityList.clear();
 	}
 
-	public EntityList getEntityList() {
+	public EntityList<T> getEntityList() {
 		return entityList;
 	}
 
-	public PhysicsSpace getPhysicsSpace() {
+	public PhysicsSpace<T> getPhysicsSpace() {
 		return physicsSpace;
 	}
 

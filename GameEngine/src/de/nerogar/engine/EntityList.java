@@ -3,19 +3,20 @@ package de.nerogar.engine;
 import java.util.*;
 
 import de.nerogar.engine.entity.BaseEntity;
+import de.nerogar.util.Vectorf;
 
-public class EntityList {
-	private List<BaseEntity> entities;
+public class EntityList<T extends Vectorf<T>> {
+	private List<BaseEntity<T>> entities;
 
 	public EntityList() {
-		entities = new ArrayList<BaseEntity>();
+		entities = new ArrayList<BaseEntity<T>>();
 	}
 
 	public void update(float timeDelta) {
-		Iterator<BaseEntity> iterator = entities.iterator();
+		Iterator<BaseEntity<T>> iterator = entities.iterator();
 
 		while (iterator.hasNext()) {
-			BaseEntity entity = iterator.next();
+			BaseEntity<T> entity = iterator.next();
 			if (entity.markedToRemoveFromWorld()) {
 				iterator.remove();
 			} else {
@@ -26,17 +27,17 @@ public class EntityList {
 	}
 
 	public void render() {
-		for (BaseEntity entity : entities) {
+		for (BaseEntity<T> entity : entities) {
 			entity.render();
 		}
 	}
 
-	public void addEntity(BaseEntity entity) {
+	public void addEntity(BaseEntity<T> entity) {
 		entities.add(entity);
 		entities.sort((a, b) -> (int) (a.getID() - b.getID()));
 	}
 
-	public BaseEntity getBuilding(long id) {
+	public BaseEntity<T> getBuilding(long id) {
 
 		//binary serch
 		int l = 0;

@@ -2,14 +2,13 @@ package de.nerogar.physics;
 
 import java.util.List;
 
-import de.nerogar.util.Vector3f;
 import de.nerogar.util.Vectorf;
 
 public class CollisionResolver {
 
-	public static void resolve(PhysicsBody movingBody, List<InteractingBody> interactingBodies, Vectorf<?> interactionVelocity, float timeDelta) {
+	public static <T extends Vectorf<T>> void resolve(PhysicsBody<T> movingBody, List<InteractingBody<T>> interactingBodies, T interactionVelocity, float timeDelta) {
 
-		for (InteractingBody interactingBody : interactingBodies) {
+		for (InteractingBody<T> interactingBody : interactingBodies) {
 			//if (!interactingBody.collision) continue;
 			//calc impact direction
 			/*Vector3f intersectionVolume = new Vector3f();
@@ -62,15 +61,15 @@ public class CollisionResolver {
 			}
 		}
 
-		for (InteractingBody interactingBody : interactingBodies) {
+		for (InteractingBody<T> interactingBody : interactingBodies) {
 
 			//friction
-			Vector3f frictionForce = new Vector3f();
+			T frictionForce = interactionVelocity.newInstance();
 			float f = interactingBody.body.friction * movingBody.friction;
 			//f = (float) Math.pow(f, timeDelta);
-			f=1;
+			f = 1;
 			f *= timeDelta;
-			
+
 			//movingBody.getVelocity().multiply(f);
 			frictionForce.set(movingBody.getForce()).set(interactingBody.interactingDirection, 0f).multiply(-f);
 			//frictionForce.set(movingBody.getForce()).set(greatestAxis, 0f).multiply(-1f).multiply(f);
@@ -80,7 +79,7 @@ public class CollisionResolver {
 		}
 	}
 
-	public static float snap(PhysicsBody movingBody, Vectorf<?> velocity, InteractingBody snapBody) {
+	public static <T extends Vectorf<T>> float snap(PhysicsBody<T> movingBody, T velocity, InteractingBody<T> snapBody) {
 		int direction = snapBody.interactingDirection;
 
 		if (velocity.get(direction) < 0) {

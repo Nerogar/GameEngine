@@ -11,7 +11,7 @@ public class Camera extends BaseCamera {
 
 	private float yaw, pitch, roll;
 	private float x, y, z;
-	private Ray camRay;
+	private Ray<Vector3f> camRay;
 
 	@Override
 	protected void transformGL() {
@@ -65,31 +65,67 @@ public class Camera extends BaseCamera {
 		float dirY = (float) (-Math.sin((pitch) * conv));
 		float dirZ = (float) (-Math.cos((pitch) * conv) * Math.cos(yaw * conv));
 
-		camRay = new Ray(new Vector3f(x, y, z), new Vector3f(dirX, dirY, dirZ));
+		camRay = new Ray<Vector3f>(new Vector3f(x, y, z), new Vector3f(dirX, dirY, dirZ));
 	}
 
-	public Ray getCameraRay() {
-		if(camRay == null) recalcCameraRay();
+	public Ray<Vector3f> getCameraRay() {
+		if (camRay == null) recalcCameraRay();
 		return camRay;
 	}
 
-	public void setYaw(float yaw) {this.yaw = yaw; camRay = null;}
-	public float getYaw() {return yaw;}
+	public void setYaw(float yaw) {
+		this.yaw = yaw;
+		camRay = null;
+	}
 
-	public void setPitch(float pitch) {this.pitch = pitch; camRay = null;}
-	public float getPitch() {return pitch;}
+	public float getYaw() {
+		return yaw;
+	}
 
-	public void setRoll(float roll) {this.roll = roll; camRay = null;}
-	public float getRoll() {return roll;}
+	public void setPitch(float pitch) {
+		this.pitch = pitch;
+		camRay = null;
+	}
 
-	public void setX(float x) {this.x = x; camRay = null;}
-	public float getX() {return x;}
+	public float getPitch() {
+		return pitch;
+	}
 
-	public void setY(float y) {this.y = y; camRay = null;}
-	public float getY() {return y;}
+	public void setRoll(float roll) {
+		this.roll = roll;
+		camRay = null;
+	}
 
-	public void setZ(float z) {this.z = z; camRay = null;}
-	public float getZ() {return z;}
+	public float getRoll() {
+		return roll;
+	}
+
+	public void setX(float x) {
+		this.x = x;
+		camRay = null;
+	}
+
+	public float getX() {
+		return x;
+	}
+
+	public void setY(float y) {
+		this.y = y;
+		camRay = null;
+	}
+
+	public float getY() {
+		return y;
+	}
+
+	public void setZ(float z) {
+		this.z = z;
+		camRay = null;
+	}
+
+	public float getZ() {
+		return z;
+	}
 
 	@Override
 	public String toString() {

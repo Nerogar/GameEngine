@@ -2,12 +2,12 @@ package de.nerogar.physics;
 
 import de.nerogar.util.Vectorf;
 
-public class PhysicsBody {
-	public BoundingAABB bounding;
-	private Vectorf<?> position;
+public class PhysicsBody <T extends Vectorf<T>>{
+	public BoundingAABB<T> bounding;
+	private T position;
 
-	private Vectorf<?> velocity;
-	private Vectorf<?> force;
+	private T velocity;
+	private T force;
 
 	public float mass;
 	protected float inverseMass;
@@ -17,7 +17,7 @@ public class PhysicsBody {
 	private boolean isStatic;
 	private boolean[] staticAxis;
 
-	public PhysicsBody(BoundingAABB bounding, Vectorf<?> position) {
+	public PhysicsBody(BoundingAABB<T> bounding, T position) {
 		this.bounding = bounding;
 		this.position = position;
 		this.velocity = position.newInstance();
@@ -31,11 +31,11 @@ public class PhysicsBody {
 		this.stiffness = 0.5f;
 	}
 
-	public boolean intersects(PhysicsBody body) {
+	public boolean intersects(PhysicsBody<T> body) {
 		return bounding.intersects(body.bounding, position, body.position);
 	}
 	
-	public boolean intersects(Vectorf<?> point) {
+	public boolean intersects(T point) {
 		return bounding.intersects(point, position);
 	}
 
@@ -44,15 +44,15 @@ public class PhysicsBody {
 		this.inverseMass = 1f / mass;
 	}
 
-	public void addForce(Vectorf<?> newForce) {
+	public void addForce(T newForce) {
 		velocity.add(newForce.multiplied(inverseMass));
 	}
 
-	public Vectorf<?> getPosition() {
+	public T getPosition() {
 		return position;
 	}
 
-	public Vectorf<?> getForce() {
+	public T getForce() {
 		recalculateForce();
 		return force;
 	}
@@ -61,7 +61,7 @@ public class PhysicsBody {
 		force.set(velocity.multiplied(mass));
 	}
 
-	public Vectorf<?> getVelocity() {
+	public T getVelocity() {
 		return velocity;
 	}
 

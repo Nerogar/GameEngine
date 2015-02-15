@@ -2,21 +2,22 @@ package de.nerogar.util;
 
 import de.nerogar.physics.PhysicsBody;
 
-public class Ray {
-	private Vectorf<?> start;
+public class Ray<T extends Vectorf<T>> {
+	private T start;
 	/**normalized direction*/
-	private Vectorf<?> direction;
-	private Vectorf<?> inverseDirection;
+	private T direction;
+	private T inverseDirection;
 
 	//private static Vector3f intersectionPoint = new Vector3f();
 
-	public Ray(Vectorf<?> start, Vectorf<?> direction) {
+	public Ray(T start, T direction) {
 		this.start = start;
 		setDirection(direction);
 	}
 
-	public RayIntersection getIntersectionPoint(PhysicsBody body) {
-		Vector3f intersectionPoint = new Vector3f();
+	public RayIntersection<T> getIntersectionPoint(PhysicsBody<T> body) {
+		T intersectionPoint = start.newInstance();
+
 		for (int axis = 0; axis < direction.getComponentCount(); axis++) {
 
 			if (direction.get(axis) != 0f) {
@@ -42,14 +43,14 @@ public class Ray {
 					}
 				}
 
-				if (isValidIntersection) return new RayIntersection(intersectionPoint, distance, body);
+				if (isValidIntersection) return new RayIntersection<T>(intersectionPoint, distance, body);
 			}
 		}
 
 		return null;
 	}
 
-	public void setDirection(Vectorf<?> direction) {
+	public void setDirection(T direction) {
 		this.direction = direction;
 		if (inverseDirection == null) inverseDirection = direction.newInstance();
 		for (int i = 0; i < direction.getComponentCount(); i++) {
@@ -58,15 +59,15 @@ public class Ray {
 
 	}
 
-	public void setStart(Vectorf<?> start) {
+	public void setStart(T start) {
 		this.start = start;
 	}
 
-	public Vectorf<?> getStart() {
+	public T getStart() {
 		return start;
 	}
 
-	public Vectorf<?> getDirection() {
+	public T getDirection() {
 		return direction;
 	}
 

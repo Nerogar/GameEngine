@@ -1,6 +1,6 @@
 package de.nerogar.util;
 
-public interface Vectorf<T extends Vectorf<?>> {
+public interface Vectorf<T extends Vectorf<T>> {
 
 	public abstract int getComponentCount();
 

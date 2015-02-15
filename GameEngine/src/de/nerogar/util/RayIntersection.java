@@ -1,21 +1,20 @@
 package de.nerogar.util;
 
 import de.nerogar.physics.PhysicsBody;
-import de.nerogar.util.Vector3f;
 
-public class RayIntersection implements Comparable<RayIntersection> {
-	public Vector3f intersectionPoint;
+public class RayIntersection<T extends Vectorf<T>> implements Comparable<RayIntersection<T>> {
+	public T intersectionPoint;
 	public float distance;
-	public PhysicsBody intersectingBody;
+	public PhysicsBody<T> intersectingBody;
 
-	public RayIntersection(Vector3f intersectionPoint, float distance, PhysicsBody intersectingBody) {
+	public RayIntersection(T intersectionPoint, float distance, PhysicsBody<T> intersectingBody) {
 		this.intersectionPoint = intersectionPoint;
 		this.distance = distance;
 		this.intersectingBody = intersectingBody;
 	}
 
 	@Override
-	public int compareTo(RayIntersection obj) {
+	public int compareTo(RayIntersection<T> obj) {
 		return distance - obj.distance < 0 ? -1 : 1;
 	}
 
