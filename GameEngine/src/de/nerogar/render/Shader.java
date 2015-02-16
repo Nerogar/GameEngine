@@ -75,8 +75,7 @@ public class Shader {
 
 	public void reCompile() {
 		if (compiled) {
-			glDeleteProgram(shaderHandle);
-			compiled = false;
+			cleanup();
 		}
 
 		shaderHandle = glCreateProgram();
@@ -166,4 +165,15 @@ public class Shader {
 
 		deactivate();
 	}
+
+	public void cleanup() {
+		glDeleteProgram(shaderHandle);
+		compiled = false;
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		if (compiled) System.err.println("Shader not cleaned up. fileNames: " + vertexShaderFile + ", " + fragmentShaderFile);
+	}
+
 }

@@ -104,7 +104,7 @@ public abstract class Renderable {
 
 	}
 
-	private void cleanup() {
+	public void cleanup() {
 		glDeleteBuffers(vboHandle);
 		vboInitialized = false;
 	}

@@ -130,6 +130,16 @@ public class RenderTarget {
 		glBindFramebuffer(GL_FRAMEBUFFER, framebufferID);
 	}
 
+	
+
+	public static void bindDefault() {
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	}
+
+	public int getFramebufferID() {
+		return framebufferID;
+	}
+
 	public void cleanup() {
 		if (useDepthTexture) {
 			depthTexture.cleanup();
@@ -143,15 +153,6 @@ public class RenderTarget {
 		glDeleteFramebuffers(framebufferID);
 		initialized = false;
 	}
-
-	public static void bindDefault() {
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	}
-
-	public int getFramebufferID() {
-		return framebufferID;
-	}
-
 	@Override
 	protected void finalize() throws Throwable {
 		if (initialized) System.err.println("render Target not cleaned up. id: " + framebufferID);
