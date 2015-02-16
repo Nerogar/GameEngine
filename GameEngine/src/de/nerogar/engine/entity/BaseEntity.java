@@ -41,6 +41,10 @@ public abstract class BaseEntity<T extends Vectorf<T>> extends PhysicsBody<T> {
 	public void teleport(T newPos) {
 		getPosition().set(newPos);
 	}
+	
+	public void teleportRelative(T newPos) {
+		getPosition().add(newPos);
+	}
 
 	public void removeFromWorld() {
 		if (world != null) {

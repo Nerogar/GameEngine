@@ -159,7 +159,9 @@ public class Shader {
 		if (!active && compiled) {
 			active = true;
 			glUseProgram(shaderHandle);
-		} else if (!compiled) throw new RuntimeException("Shader is not compiled. " + toString());
+		} else if (!compiled) {
+			System.err.println("Shader is not compiled. " + toString());
+		}
 	}
 
 	public void deactivate() {
