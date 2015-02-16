@@ -159,7 +159,7 @@ public class Shader {
 		if (!active && compiled) {
 			active = true;
 			glUseProgram(shaderHandle);
-		}
+		} else if (!compiled) throw new RuntimeException("Shader is not compiled. " + toString());
 	}
 
 	public void deactivate() {
@@ -183,8 +183,13 @@ public class Shader {
 	}
 
 	@Override
+	public String toString() {
+		return "[" + shaderHandle + "; " + vertexShaderFile + "; " + fragmentShaderFile + "]";
+	}
+
+	@Override
 	protected void finalize() throws Throwable {
-		if (compiled) System.err.println("Shader not cleaned up. fileNames: " + vertexShaderFile + ", " + fragmentShaderFile);
+		if (compiled) System.err.println("Shader not cleaned up. " + toString());
 	}
 
 }
