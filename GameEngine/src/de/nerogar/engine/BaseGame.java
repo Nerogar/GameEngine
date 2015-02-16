@@ -29,6 +29,7 @@ public abstract class BaseGame {
 		startup();
 		run();
 		cleanup();
+		display.cleanup();
 	}
 
 	protected void run() {
@@ -41,7 +42,6 @@ public abstract class BaseGame {
 			if (targetFPS > 0) Display.sync(targetFPS);
 			if (Display.isCloseRequested()) running = false;
 		}
-		display.cleanup();
 	}
 
 	public abstract void startup();
