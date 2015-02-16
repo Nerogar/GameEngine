@@ -30,6 +30,9 @@ public class Shader {
 		reCompile();
 	}
 
+	//uniforms
+
+	//float
 	public void setUniformf(String name, float[] values) {
 		FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(values.length);
 		floatBuffer.put(values);
@@ -39,22 +42,6 @@ public class Shader {
 
 	public void setUniformf(String name, FloatBuffer floatBuffer) {
 		glUniform1(glGetUniformLocation(shaderHandle, name), floatBuffer);
-	}
-
-	public void setUniform1i(String name, int i0) {
-		glUniform1i(glGetUniformLocation(shaderHandle, name), i0);
-	}
-
-	public void setUniform2i(String name, int i0, int i1) {
-		glUniform2i(glGetUniformLocation(shaderHandle, name), i0, i1);
-	}
-
-	public void setUniform3i(String name, int i0, int i1, int i2) {
-		glUniform3i(glGetUniformLocation(shaderHandle, name), i0, i1, i2);
-	}
-
-	public void setUniform4i(String name, int i0, int i1, int i2, int i3) {
-		glUniform4i(glGetUniformLocation(shaderHandle, name), i0, i1, i2, i3);
 	}
 
 	public void setUniform1f(String name, float f0) {
@@ -72,6 +59,30 @@ public class Shader {
 	public void setUniform4f(String name, float f0, float f1, float f2, float f3) {
 		glUniform4f(glGetUniformLocation(shaderHandle, name), f0, f1, f2, f3);
 	}
+
+	//int
+	public void setUniform1i(String name, int i0) {
+		glUniform1i(glGetUniformLocation(shaderHandle, name), i0);
+	}
+
+	public void setUniform2i(String name, int i0, int i1) {
+		glUniform2i(glGetUniformLocation(shaderHandle, name), i0, i1);
+	}
+
+	public void setUniform3i(String name, int i0, int i1, int i2) {
+		glUniform3i(glGetUniformLocation(shaderHandle, name), i0, i1, i2);
+	}
+
+	public void setUniform4i(String name, int i0, int i1, int i2, int i3) {
+		glUniform4i(glGetUniformLocation(shaderHandle, name), i0, i1, i2, i3);
+	}
+
+	//boolean
+	public void setUniform1bool(String name, boolean b0) {
+		glUniform1i(glGetUniformLocation(shaderHandle, name), b0 ? 1 : 0);
+	}
+
+	//end uniforms
 
 	public void reCompile() {
 		if (compiled) {
