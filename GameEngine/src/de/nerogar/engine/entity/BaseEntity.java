@@ -6,6 +6,7 @@ import de.nerogar.engine.BaseWorld;
 import de.nerogar.engine.UpdateEvent;
 import de.nerogar.physics.BoundingAABB;
 import de.nerogar.physics.PhysicsBody;
+import de.nerogar.render.Shader;
 import de.nerogar.util.Vectorf;
 
 public abstract class BaseEntity<T extends Vectorf<T>> extends PhysicsBody<T> {
@@ -31,7 +32,7 @@ public abstract class BaseEntity<T extends Vectorf<T>> extends PhysicsBody<T> {
 
 	public abstract void update(float timeDelta, List<UpdateEvent> events);
 
-	public abstract void render();
+	public abstract void render(Shader shader);
 
 	public void setWorld(BaseWorld<T> world) {
 		removeFromWorld = false;

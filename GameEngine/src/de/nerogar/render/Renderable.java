@@ -6,6 +6,7 @@ import static org.lwjgl.opengl.GL15.*;
 import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL13;
 
 public abstract class Renderable {
 	private int vboHandle;
@@ -16,6 +17,7 @@ public abstract class Renderable {
 
 	private int vertexComponentCount;
 	private int textureComponentCount;
+
 	//private int normalComponentCount; //unused
 
 	//private Shader transformShader;
@@ -72,17 +74,25 @@ public abstract class Renderable {
 		this.transformShader = transformShader;
 	}*/
 
+	/**
+	 * @param renderProperties renderProperties for transforming the object
+	 *        or <b>null</b>, if you wat to handle transformation yourself
+	 */
 	public void render(RenderProperties renderProperties) {
 		if (!vboInitialized) throw new RuntimeException("Renderable not initialized");
 
-		glPushMatrix();
-		if (renderProperties.position != null) glTranslatef(renderProperties.position.get(0), renderProperties.position.get(1), renderProperties.position.get(2));
-		if (renderProperties.rotation != null) {
-			glRotatef(renderProperties.rotation.get(0), 1f, 0f, 0f);
-			glRotatef(renderProperties.rotation.get(1), 0f, 1f, 0f);
-			glRotatef(renderProperties.rotation.get(2), 0f, 0f, 1f);
+		if (renderProperties != null) {
+			glPushMatrix();
+			GL13.glMultTransposeMatrix(renderProperties.getModelMatrix().asBuffer());
+
+			/*if (renderProperties.position != null) glTranslatef(renderProperties.position.get(0), renderProperties.position.get(1), renderProperties.position.get(2));
+			if (renderProperties.rotation != null) {
+				glRotatef(renderProperties.rotation.get(0), 1f, 0f, 0f);
+				glRotatef(renderProperties.rotation.get(1), 0f, 1f, 0f);
+				glRotatef(renderProperties.rotation.get(2), 0f, 0f, 1f);
+			}
+			if (renderProperties.scale != null) glScalef(renderProperties.scale.get(0), renderProperties.scale.get(1), renderProperties.scale.get(2));*/
 		}
-		if (renderProperties.scale != null) glScalef(renderProperties.scale.get(0), renderProperties.scale.get(1), renderProperties.scale.get(2));
 
 		//render
 		glBindBuffer(GL_ARRAY_BUFFER, vboHandle);
@@ -100,7 +110,8 @@ public abstract class Renderable {
 		glDisableClientState(GL_VERTEX_ARRAY);
 		//render end
 
-		glPopMatrix();
+		
+		if (renderProperties != null) glPopMatrix();
 
 	}
 

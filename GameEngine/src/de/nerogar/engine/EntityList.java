@@ -3,6 +3,7 @@ package de.nerogar.engine;
 import java.util.*;
 
 import de.nerogar.engine.entity.BaseEntity;
+import de.nerogar.render.Shader;
 import de.nerogar.util.Vectorf;
 
 public class EntityList<T extends Vectorf<T>> {
@@ -29,9 +30,9 @@ public class EntityList<T extends Vectorf<T>> {
 		return events;
 	}
 
-	public void render() {
+	public void render(Shader shader) {
 		for (BaseEntity<T> entity : entities) {
-			entity.render();
+			entity.render(shader);
 		}
 	}
 

@@ -1,25 +1,11 @@
 package de.nerogar.render;
 
-import de.nerogar.util.Vectorf;
+import de.nerogar.util.Matrix4f;
 
-public class RenderProperties {
+public interface RenderProperties {
 
-	public static final RenderProperties defaultInstance;
+	public void transformGL();
 
-	public Vectorf<?> position = null;
-	public Vectorf<?> rotation = null;
-	public Vectorf<?> scale = null;
+	public Matrix4f getModelMatrix();
 
-	public RenderProperties() {
-	}
-
-	public RenderProperties(Vectorf<?> position, Vectorf<?> rotation, Vectorf<?> scale) {
-		this.position = position;
-		this.rotation = rotation;
-		this.scale = scale;
-	}
-
-	static {
-		defaultInstance = new RenderProperties();
-	}
 }

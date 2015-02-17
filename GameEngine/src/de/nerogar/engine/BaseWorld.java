@@ -4,6 +4,7 @@ import java.util.List;
 
 import de.nerogar.engine.entity.BaseEntity;
 import de.nerogar.physics.PhysicsSpace;
+import de.nerogar.render.Shader;
 import de.nerogar.util.Vectorf;
 
 public abstract class BaseWorld<T extends Vectorf<T>> {
@@ -27,9 +28,9 @@ public abstract class BaseWorld<T extends Vectorf<T>> {
 		return events;
 	}
 
-	public void render() {
+	public void render(Shader shader) {
 		//physicsSpace.render();
-		entityList.render();
+		entityList.render(shader);
 	}
 
 	public void spawnEntity(BaseEntity<T> entity, T pos) {

@@ -5,15 +5,12 @@ import static org.lwjgl.opengl.GL20.*;
 
 import java.io.*;
 import java.nio.FloatBuffer;
-import java.util.HashMap;
 
 import org.lwjgl.BufferUtils;
 
 public class Shader {
 
 	private int shaderHandle;
-	public HashMap<String, Integer> uniforms;
-	public HashMap<String, Integer> attributes;
 
 	private String vertexShaderFile, vertexShader;
 	private String fragmentShaderFile, fragmentShader;
@@ -58,6 +55,10 @@ public class Shader {
 
 	public void setUniform4f(String name, float f0, float f1, float f2, float f3) {
 		glUniform4f(glGetUniformLocation(shaderHandle, name), f0, f1, f2, f3);
+	}
+
+	public void setUniformMat4f(String name, FloatBuffer buffer) {
+		glUniformMatrix4(glGetUniformLocation(shaderHandle, name), true, buffer);
 	}
 
 	//int

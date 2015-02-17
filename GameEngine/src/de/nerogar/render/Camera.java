@@ -47,47 +47,25 @@ public class Camera extends BaseCamera {
 
 	}
 
-	//@formatter:off
 	private void setPositionMatrix() {
-		positionMatrix.set(new float[] {
-				1.0f, 0.0f, 0.0f, -x,
-				0.0f, 1.0f, 0.0f, -y,
-				0.0f, 0.0f, 1.0f, -z,
-				0.0f, 0.0f, 0.0f, 1.0f
-		});
+		Matrix4fUtils.setPositionMatrix(positionMatrix, -x, -y, -z);
 		finalMatrixDirty = true;
 	}
 
 	private void setYawMatrix() {
-		yawMatrix.set(new float[] {
-				(float) Math.cos(yaw),	0.0f,			(float) Math.sin(yaw),	0.0f,
-				0.0f,					1.0f,			0.0f,					0.0f,
-				(float)					-Math.sin(yaw),	0.0f,					(float) Math.cos(yaw), 0.0f,
-				0.0f,					0.0f,			0.0f,					1.0f
-		});
+		Matrix4fUtils.setYawMatrix(yawMatrix, -yaw);
 		finalMatrixDirty = true;
 	}
 
 	private void setPitchMatrix() {
-		pitchMatrix.set(new float[] {
-				1.0f,	0.0f,						0.0f,						0.0f,
-				0.0f,	(float) Math.cos(pitch),	(float) -Math.sin(pitch),	0.0f,
-				0.0f,	(float) Math.sin(pitch),	(float) Math.cos(pitch),	0.0f,
-				0.0f,	0.0f,						0.0f,						1.0f
-		});
+		Matrix4fUtils.setPitchMatrix(pitchMatrix, -pitch);
 		finalMatrixDirty = true;
 	}
 
 	private void setRollMatrix() {
-		rollMatrix.set(new float[] {
-				(float) Math.cos(roll),	(float) -Math.sin(roll),	0.0f, 0.0f,
-				(float) Math.sin(roll),	(float) Math.cos(roll),		0.0f, 0.0f,
-				0.0f,					0.0f,						1.0f, 0.0f,
-				0.0f,					0.0f,						0.0f, 1.0f
-		});
+		Matrix4fUtils.setRollMatrix(rollMatrix, -roll);
 		finalMatrixDirty = true;
 	}
-	//@formatter:on
 
 	private void setFinalMatrix() {
 		finalMatrix.set(positionMatrix);
@@ -109,6 +87,10 @@ public class Camera extends BaseCamera {
 	public Ray<Vector3f> getCameraRay() {
 		if (camRay == null) recalcCameraRay();
 		return camRay;
+	}
+
+	public Matrix4f getViewMatrix() {
+		return finalMatrix;
 	}
 
 	/**
