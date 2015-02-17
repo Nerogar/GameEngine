@@ -115,10 +115,10 @@ public class InputHandler {
 		float mouseRotDownSin = (float) Math.sin(mouseY * fov / 180f * Math.PI);
 		float mouseRotDownCos = (float) Math.cos(mouseY * fov / 180f * Math.PI);*/
 
-		float camRotSin = (float) Math.sin(camera.getYaw() / 180f * Math.PI);
-		float camRotCos = (float) Math.cos(camera.getYaw() / 180f * Math.PI);
-		float camRotDownSin = (float) Math.sin(camera.getPitch() / 180f * Math.PI);
-		float camRotDownCos = (float) Math.cos(camera.getPitch() / 180f * Math.PI);
+		float camRotSin = (float) Math.sin(camera.getYaw());
+		float camRotCos = (float) Math.cos(camera.getYaw());
+		float camRotDownSin = (float) Math.sin(camera.getPitch());
+		float camRotDownCos = (float) Math.cos(camera.getPitch());
 
 		Vector3f dirLoc = new Vector3f(0, 0, 0);
 

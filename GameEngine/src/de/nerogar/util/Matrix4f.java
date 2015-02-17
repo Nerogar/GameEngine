@@ -1,6 +1,9 @@
 package de.nerogar.util;
 
+import java.nio.FloatBuffer;
 import java.util.Arrays;
+
+import org.lwjgl.BufferUtils;
 
 public class Matrix4f implements Matrixf<Matrix4f> {
 
@@ -28,12 +31,12 @@ public class Matrix4f implements Matrixf<Matrix4f> {
 	}
 
 	@Override
-	public float get(int componentLine, int componentCollumn) {
+	public float get(int componentCollumn, int componentLine) {
 		return components[componentLine * componentCount + componentCollumn];
 	}
 
 	@Override
-	public Matrix4f set(int componentLine, int componentCollumn, float f) {
+	public Matrix4f set(int componentCollumn, int componentLine, float f) {
 		components[componentLine * componentCount + componentCollumn] = f;
 		return this;
 	}
@@ -53,6 +56,15 @@ public class Matrix4f implements Matrixf<Matrix4f> {
 			for (int j = 0; j < componentCount; j++) {
 				set(i, j, m.get(i, j));
 			}
+		}
+
+		return this;
+	}
+
+	@Override
+	public Matrix4f set(float[] m) {
+		for (int i = 0; i < components.length; i++) {
+			components[i] = m[i];
 		}
 
 		return this;
@@ -187,6 +199,29 @@ public class Matrix4f implements Matrixf<Matrix4f> {
 		}
 
 		return new Matrix4f(newMatrix);
+	}
+
+	public FloatBuffer asBuffer() {
+		FloatBuffer buffer = BufferUtils.createFloatBuffer(componentCount * componentCount);
+		buffer.put(components);
+		buffer.flip();
+		return buffer;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder("[");
+
+		for (int line = 0; line < componentCount; line++) {
+			for (int i = 0; i < componentCount; i++) {
+				sb.append(String.valueOf(components[line * componentCount + i])).append("|");
+			}
+
+			sb.append("| ");
+		}
+		sb.append("]");
+
+		return sb.toString();
 	}
 
 	@Override

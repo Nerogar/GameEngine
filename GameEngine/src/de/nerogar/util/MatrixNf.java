@@ -59,6 +59,15 @@ public class MatrixNf implements Matrixf<MatrixNf> {
 	}
 
 	@Override
+	public MatrixNf set(float[] m) {
+		for (int i = 0; i < components.length; i++) {
+			components[i] = m[i];
+		}
+
+		return this;
+	}
+
+	@Override
 	public MatrixNf add(Matrixf<?> m) {
 		for (int i = 0; i < componentCount; i++) {
 			for (int j = 0; j < componentCount; j++) {

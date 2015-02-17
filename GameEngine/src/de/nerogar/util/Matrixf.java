@@ -1,6 +1,6 @@
 package de.nerogar.util;
 
-public interface Matrixf<T extends Matrixf<?>> {
+public interface Matrixf<T extends Matrixf<T>> {
 
 	public abstract int getComponentCount();
 
@@ -15,6 +15,8 @@ public interface Matrixf<T extends Matrixf<?>> {
 	public abstract T set(float allComponents);
 
 	public abstract T set(Matrixf<?> m);
+	
+	public abstract T set(float[] m);
 
 	//add
 	public abstract T add(Matrixf<?> m);
