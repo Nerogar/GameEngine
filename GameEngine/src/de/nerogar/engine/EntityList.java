@@ -54,6 +54,10 @@ public class EntityList<T extends Vectorf<T>> {
 		return candidates;
 	}
 
+	public List<BaseEntity<T>> getEntities() {
+		return entities;
+	}
+
 	public BaseEntity<T> getEntity(long id) {
 
 		//binary serch
