@@ -10,14 +10,19 @@ public class Matrix4f implements Matrixf<Matrix4f> {
 	private float[] components;
 	private int componentCount;
 
+	private FloatBuffer buffer;
+	private boolean isBufferDirty;
+
 	public Matrix4f() {
 		componentCount = 4;
 		components = new float[componentCount * componentCount];
+		isBufferDirty = true;
 	}
 
 	private Matrix4f(float[] components) {
 		this.components = components;
 		this.componentCount = 4;
+		isBufferDirty = true;
 	}
 
 	@Override
@@ -38,6 +43,7 @@ public class Matrix4f implements Matrixf<Matrix4f> {
 	@Override
 	public Matrix4f set(int componentCollumn, int componentLine, float f) {
 		components[componentLine * componentCount + componentCollumn] = f;
+		isBufferDirty = true;
 		return this;
 	}
 
@@ -46,6 +52,7 @@ public class Matrix4f implements Matrixf<Matrix4f> {
 		for (int i = 0; i < components.length; i++) {
 			components[i] = allComponents;
 		}
+		isBufferDirty = true;
 
 		return this;
 	}
@@ -57,6 +64,7 @@ public class Matrix4f implements Matrixf<Matrix4f> {
 				set(i, j, m.get(i, j));
 			}
 		}
+		isBufferDirty = true;
 
 		return this;
 	}
@@ -66,6 +74,7 @@ public class Matrix4f implements Matrixf<Matrix4f> {
 		for (int i = 0; i < components.length; i++) {
 			components[i] = m[i];
 		}
+		isBufferDirty = true;
 
 		return this;
 	}
@@ -77,6 +86,7 @@ public class Matrix4f implements Matrixf<Matrix4f> {
 				set(i, j, get(i, j) + m.get(i, j));
 			}
 		}
+		isBufferDirty = true;
 
 		return this;
 	}
@@ -93,6 +103,7 @@ public class Matrix4f implements Matrixf<Matrix4f> {
 				set(i, j, get(i, j) - m.get(i, j));
 			}
 		}
+		isBufferDirty = true;
 
 		return this;
 	}
@@ -107,6 +118,7 @@ public class Matrix4f implements Matrixf<Matrix4f> {
 		for (int i = 0; i < components.length; i++) {
 			components[i] *= f;
 		}
+		isBufferDirty = true;
 
 		return this;
 	}
@@ -138,6 +150,7 @@ public class Matrix4f implements Matrixf<Matrix4f> {
 		}
 
 		components = newMatrix;
+		isBufferDirty = true;
 
 		return this;
 	}
@@ -178,6 +191,7 @@ public class Matrix4f implements Matrixf<Matrix4f> {
 		}
 
 		components = newMatrix;
+		isBufferDirty = true;
 
 		return this;
 	}
@@ -202,10 +216,22 @@ public class Matrix4f implements Matrixf<Matrix4f> {
 	}
 
 	public FloatBuffer asBuffer() {
-		FloatBuffer buffer = BufferUtils.createFloatBuffer(componentCount * componentCount);
+		if (buffer == null) createBuffer();
+		if (isBufferDirty) updateBuffer();
+
+		return buffer;
+	}
+
+	private void createBuffer() {
+		buffer = BufferUtils.createFloatBuffer(componentCount * componentCount);
+	}
+
+	private void updateBuffer() {
+		buffer.clear();
 		buffer.put(components);
 		buffer.flip();
-		return buffer;
+
+		isBufferDirty = false;
 	}
 
 	@Override
