@@ -9,12 +9,15 @@ public class RenderHelper {
 
 		glTexCoord2f(1f, 1f);
 		glVertex3f(screenProperties.getRenderWidth(), screenProperties.getRenderHeight(), -1f);
-		glTexCoord2f(1f, 0f);
-		glVertex3f(screenProperties.getRenderWidth(), 0f, -1f);
-		glTexCoord2f(0f, 0f);
-		glVertex3f(0f, 0f, -1f);
+
 		glTexCoord2f(0f, 1f);
 		glVertex3f(0f, screenProperties.getRenderHeight(), -1f);
+
+		glTexCoord2f(0f, 0f);
+		glVertex3f(0f, 0f, -1f);
+
+		glTexCoord2f(1f, 0f);
+		glVertex3f(screenProperties.getRenderWidth(), 0f, -1f);
 
 		glEnd();
 	}
