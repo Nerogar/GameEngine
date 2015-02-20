@@ -8,8 +8,10 @@ public class RenderProperties3f implements RenderProperties {
 
 	private float yaw, pitch, roll;
 	private float x, y, z;
+	private float scaleX, scaleY, scaleZ;
 
 	private Matrix4f positionMatrix;
+	private Matrix4f scaleMatrix;
 	private Matrix4f yawMatrix;
 	private Matrix4f pitchMatrix;
 	private Matrix4f rollMatrix;
@@ -23,6 +25,7 @@ public class RenderProperties3f implements RenderProperties {
 
 	public RenderProperties3f(float yaw, float pitch, float roll, float x, float y, float z) {
 		positionMatrix = new Matrix4f();
+		scaleMatrix = new Matrix4f();
 		yawMatrix = new Matrix4f();
 		pitchMatrix = new Matrix4f();
 		rollMatrix = new Matrix4f();
@@ -34,8 +37,13 @@ public class RenderProperties3f implements RenderProperties {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		
+
+		scaleX = 1.0f;
+		scaleY = 1.0f;
+		scaleZ = 1.0f;
+
 		setPositionMatrix();
+		setScaleMatrix();
 		setYawMatrix();
 		setPitchMatrix();
 		setRollMatrix();
@@ -57,6 +65,11 @@ public class RenderProperties3f implements RenderProperties {
 		finalMatrixDirty = true;
 	}
 
+	private void setScaleMatrix() {
+		Matrix4fUtils.setScaleMatrix(scaleMatrix, scaleX, scaleY, scaleZ);
+		finalMatrixDirty = true;
+	}
+
 	private void setYawMatrix() {
 		Matrix4fUtils.setYawMatrix(yawMatrix, yaw);
 		finalMatrixDirty = true;
@@ -74,6 +87,7 @@ public class RenderProperties3f implements RenderProperties {
 
 	private void setFinalMatrix() {
 		finalMatrix.set(positionMatrix);
+		finalMatrix.multiplyLeft(scaleMatrix);
 		finalMatrix.multiplyLeft(yawMatrix);
 		finalMatrix.multiplyLeft(pitchMatrix);
 		finalMatrix.multiplyLeft(rollMatrix);
@@ -168,6 +182,29 @@ public class RenderProperties3f implements RenderProperties {
 		this.y = y;
 		this.z = z;
 		setPositionMatrix();
+	}
+
+	/**
+	 * sets the x, y and z properties
+	 */
+	public void setScale(float scaleX, float scaleY, float scaleZ) {
+		if (this.scaleX == x && this.scaleY == y && this.scaleZ == z) return;
+		this.scaleX = scaleX;
+		this.scaleY = scaleY;
+		this.scaleZ = scaleZ;
+		setScaleMatrix();
+	}
+
+	public float getScaleX() {
+		return scaleX;
+	}
+
+	public float getScaleY() {
+		return scaleY;
+	}
+
+	public float getScaleZ() {
+		return scaleZ;
 	}
 
 	/**

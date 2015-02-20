@@ -119,7 +119,7 @@ public class Shader {
 
 			glLinkProgram(shaderHandle);
 			if (glGetProgrami(shaderHandle, GL_LINK_STATUS) == GL_FALSE) {
-				System.err.println("Shader program wasn't linked correctly.");
+				System.err.println("Shader program wasn't linked correctly. Error log:");
 				System.err.println(glGetProgramInfoLog(shaderHandle, 1024));
 				compileError = true;
 			}
@@ -132,7 +132,7 @@ public class Shader {
 		}
 	}
 
-	public String readFile(String filename) {
+	private String readFile(String filename) {
 		StringBuilder text = new StringBuilder();
 
 		try {
@@ -161,7 +161,7 @@ public class Shader {
 			active = true;
 			glUseProgram(shaderHandle);
 		} else if (!compiled) {
-			System.err.println("Shader is not compiled. " + toString());
+			//System.err.println("Shader is not compiled. " + toString());
 		}
 	}
 
