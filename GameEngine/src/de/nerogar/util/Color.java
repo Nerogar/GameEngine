@@ -14,8 +14,8 @@ public class Color {
 		this(red / 255f, blue / 255f, green / 255f, alpha / 255f);
 	}
 
-	public Color(int rgba) {
-		this((rgba >>> 24) & 0xff, (rgba >>> 16) & 0xff, (rgba >>> 8) & 0xff, (rgba) & 0xff);
+	public Color(int argb) {
+		this((argb >>> 16) & 0xff, (argb >>> 8) & 0xff, (argb) & 0xff, (argb >>> 24) & 0xff);
 	}
 
 	public Color(float red, float green, float blue, float alpha) {
@@ -36,6 +36,10 @@ public class Color {
 
 	public float getA() {
 		return colors[3];
+	}
+
+	public int getARGB() {
+		return (((int) (colors[3] * 256) & 0xff) << 24) + (((int) (colors[0] * 256) & 0xff) << 16) + (((int) (colors[1] * 256) & 0xff) << 8) + (((int) (colors[2] * 256) & 0xff));
 	}
 
 	/*public FloatBuffer getFloatBuffer() {
