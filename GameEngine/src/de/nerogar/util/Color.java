@@ -39,7 +39,7 @@ public class Color {
 	}
 
 	public int getARGB() {
-		return (((int) (colors[3] * 256) & 0xff) << 24) + (((int) (colors[0] * 256) & 0xff) << 16) + (((int) (colors[1] * 256) & 0xff) << 8) + (((int) (colors[2] * 256) & 0xff));
+		return (((int) (colors[3] * 256) & 0xff) << 24) | (((int) (colors[0] * 256) & 0xff) << 16) | (((int) (colors[1] * 256) & 0xff) << 8) | (((int) (colors[2] * 256) & 0xff));
 	}
 
 	/*public FloatBuffer getFloatBuffer() {
