@@ -7,8 +7,9 @@ import de.nerogar.network.packets.Packet;
 import de.nerogar.network.packets.PacketConnectionInfo;
 
 public class Packets {
-	// The first packet, ConnectionInfo, must always have ID 1 and it's own PacketChannel!
-
+	
+	public static final int SYSTEM_PACKET_CHANNEL = -1;
+	
 	public static class PacketContainer {
 		public int channelID;
 		public Class<? extends Packet> packetClass;
@@ -72,7 +73,7 @@ public class Packets {
 	static {
 		packets = new ArrayList<PacketContainer>();
 
-		addPacket(0, PacketConnectionInfo.class);
+		addPacket(SYSTEM_PACKET_CHANNEL, PacketConnectionInfo.class);
 	}
 
 }

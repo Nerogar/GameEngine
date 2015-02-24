@@ -39,15 +39,15 @@ public class ReceiverThread extends Thread {
 					System.out.println("received invalid packet id: " + packetId + ", ignored.");
 				} else {
 					int length = stream.readInt();
+					int read = 0;
 
-					ByteBuffer buffer = ByteBuffer.allocate(length);
-					for (int i = 0; i < length; i++) {
-						buffer.put(stream.readByte());
+					byte[] buffer = new byte[length];
+					while (read < length) {
+						read += stream.read(buffer, read, length - read);
 					}
-					buffer.flip();
 
 					Packet packet;
-					packet = packetContainer.load(buffer.array());
+					packet = packetContainer.load(buffer);
 					addPacket(packet);
 				}
 

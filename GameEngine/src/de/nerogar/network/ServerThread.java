@@ -55,7 +55,7 @@ public class ServerThread extends Thread {
 				continue;
 			}
 
-			ArrayList<Packet> connectionPackets = conn.get(0);
+			ArrayList<Packet> connectionPackets = conn.get(Packets.SYSTEM_PACKET_CHANNEL);
 
 			// The only CONNECTION_INFO packet can be ConnectionInfo. If that's not the case, deal with the ClassCastException and fix it.
 			// Also ignore any additional packets. Just the first ConnectionInfo packet gets processed
