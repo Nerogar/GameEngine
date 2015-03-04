@@ -1,10 +1,7 @@
 package de.nerogar.render;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.io.*;
+import java.util.*;
 
 public class WavefrontLoader {
 
@@ -42,17 +39,17 @@ public class WavefrontLoader {
 				switch (lineSplit[0]) {
 				case "v":
 					if (lineSplit.length == 4) {
-						float f1 = Float.valueOf(lineSplit[1]);
-						float f2 = Float.valueOf(lineSplit[2]);
-						float f3 = Float.valueOf(lineSplit[3]);
+						float f1 = Float.parseFloat(lineSplit[1]);
+						float f2 = Float.parseFloat(lineSplit[2]);
+						float f3 = Float.parseFloat(lineSplit[3]);
 
 						addVertex(f1, f2, f3);
 					}
 					break;
 				case "vt":
 					if (lineSplit.length == 3) {
-						float f1 = Float.valueOf(lineSplit[1]);
-						float f2 = 1f - Float.valueOf(lineSplit[2]);
+						float f1 = Float.parseFloat(lineSplit[1]);
+						float f2 = 1f - Float.parseFloat(lineSplit[2]);
 
 						addTexCoord(f1, f2);
 					}
@@ -60,9 +57,9 @@ public class WavefrontLoader {
 					break;
 				case "vn":
 					if (lineSplit.length == 4) {
-						float f1 = Float.valueOf(lineSplit[1]);
-						float f2 = Float.valueOf(lineSplit[2]);
-						float f3 = Float.valueOf(lineSplit[3]);
+						float f1 = Float.parseFloat(lineSplit[1]);
+						float f2 = Float.parseFloat(lineSplit[2]);
+						float f3 = Float.parseFloat(lineSplit[3]);
 
 						addNormal(f1, f2, f3);
 					}
@@ -72,24 +69,25 @@ public class WavefrontLoader {
 					lineSplit = lineData.split(" ");
 
 					if (lineSplit.length == 3) {
-						int f1 = Integer.valueOf(lineSplit[0].split("/")[0]);
-						int f2 = Integer.valueOf(lineSplit[1].split("/")[0]);
-						int f3 = Integer.valueOf(lineSplit[2].split("/")[0]);
-						int t1 = 0, t2 = 0, t3 = 0;
-						int n1 = 0, n2 = 0, n3 = 0;
+						String[][] lineSubSplit = new String[3][];
 
-						if (lineSplit[0].split("/").length > 1) {
-							t1 = Integer.valueOf(lineSplit[0].split("/")[1]);
-							t2 = Integer.valueOf(lineSplit[1].split("/")[1]);
-							t3 = Integer.valueOf(lineSplit[2].split("/")[1]);
+						lineSubSplit[0] = lineSplit[0].split("/");
+						lineSubSplit[1] = lineSplit[1].split("/");
+						lineSubSplit[2] = lineSplit[2].split("/");
 
-							if (lineSplit[0].split("/").length > 2) {
-								n1 = Integer.valueOf(lineSplit[0].split("/")[2]);
-								n2 = Integer.valueOf(lineSplit[1].split("/")[2]);
-								n3 = Integer.valueOf(lineSplit[2].split("/")[2]);
+						int f1 = Integer.parseInt(lineSubSplit[0][0]);
+						int f2 = Integer.parseInt(lineSubSplit[1][0]);
+						int f3 = Integer.parseInt(lineSubSplit[2][0]);
 
-							}
-						}
+						int t1 = 1, t2 = 1, t3 = 1;
+						if (!lineSubSplit[0][1].isEmpty()) t1 = Integer.parseInt(lineSubSplit[0][1]);
+						if (!lineSubSplit[1][1].isEmpty()) t2 = Integer.parseInt(lineSubSplit[1][1]);
+						if (!lineSubSplit[2][1].isEmpty()) t3 = Integer.parseInt(lineSubSplit[2][1]);
+
+						int n1 = Integer.parseInt(lineSubSplit[0][2]);
+						int n2 = Integer.parseInt(lineSubSplit[1][2]);
+						int n3 = Integer.parseInt(lineSubSplit[2][2]);
+
 						addFaceVerts(new int[] { f1, f2, f3 });
 						addFaceTex(new int[] { t1, t2, t3 });
 						addFaceNormal(new int[] { n1, n2, n3 });
@@ -100,6 +98,8 @@ public class WavefrontLoader {
 				}
 
 			}
+			if(texCoords.isEmpty())addTexCoord(0f, 0f);
+			
 			reader.close();
 		} catch (IOException e) {
 			e.printStackTrace();
