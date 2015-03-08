@@ -151,13 +151,25 @@ public class Shader {
 	}
 
 	private String readFile(String filename) {
+		filename = filename.replaceAll("\\\\", "/"); //replace \ with /
+
+		String folder = filename.replaceAll("[^/]*$", "");
+
 		StringBuilder text = new StringBuilder();
 
 		try {
 			BufferedReader fileReader = new BufferedReader(new FileReader(filename));
 			String line;
 			while ((line = fileReader.readLine()) != null) {
-				text.append(line).append("\n");
+				line = line.trim();
+				if (line.startsWith("#insert ")) {
+					line = folder + line.substring(8);
+					
+					text.append(readFile(line));
+					
+				} else {
+					text.append(line).append("\n");
+				}
 			}
 			fileReader.close();
 		} catch (IOException e) {
