@@ -11,7 +11,7 @@ public abstract class BaseEntity<T extends Vectorf<T>> extends PhysicsBody<T> {
 	private static long MAX_ID;
 	private long id;
 	protected BaseWorld<T> world;
-	private boolean removeFromWorld;
+
 
 	public BaseEntity(BoundingAABB<T> bounding, T position) {
 		this(getNextID(), bounding, position);
@@ -32,7 +32,7 @@ public abstract class BaseEntity<T extends Vectorf<T>> extends PhysicsBody<T> {
 	public abstract void render(Shader shader);
 
 	public void setWorld(BaseWorld<T> world) {
-		removeFromWorld = false;
+		resetRemoveFromWorld();
 		this.world = world;
 	}
 
@@ -44,15 +44,9 @@ public abstract class BaseEntity<T extends Vectorf<T>> extends PhysicsBody<T> {
 		getPosition().add(newPos);
 	}
 
-	public void removeFromWorld() {
-		if (world != null) {
-			removeFromWorld = true;
-		}
-	}
 
-	public boolean markedToRemoveFromWorld() {
-		return removeFromWorld;
-	}
+
+
 
 	protected static long getNextID() {
 		MAX_ID++;

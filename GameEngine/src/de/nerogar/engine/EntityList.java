@@ -1,9 +1,9 @@
 package de.nerogar.engine;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import de.nerogar.engine.entity.BaseEntity;
-import de.nerogar.render.Shader;
 import de.nerogar.util.Vectorf;
 
 public class EntityList<T extends Vectorf<T>> {
@@ -11,25 +11,6 @@ public class EntityList<T extends Vectorf<T>> {
 
 	public EntityList() {
 		entities = new ArrayList<BaseEntity<T>>();
-	}
-
-	public void update(float timeDelta) {
-		Iterator<BaseEntity<T>> iterator = entities.iterator();
-
-		while (iterator.hasNext()) {
-			BaseEntity<T> entity = iterator.next();
-			if (entity.markedToRemoveFromWorld()) {
-				iterator.remove();
-			} else {
-				entity.update(timeDelta);
-			}
-		}
-	}
-
-	public void render(Shader shader) {
-		for (BaseEntity<T> entity : entities) {
-			entity.render(shader);
-		}
 	}
 
 	public void addEntity(BaseEntity<T> entity) {

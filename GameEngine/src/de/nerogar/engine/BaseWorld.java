@@ -1,5 +1,7 @@
 package de.nerogar.engine;
 
+import java.util.Iterator;
+
 import de.nerogar.engine.entity.BaseEntity;
 import de.nerogar.physics.PhysicsSpace;
 import de.nerogar.render.Shader;
@@ -17,7 +19,18 @@ public abstract class BaseWorld<T extends Vectorf<T>> {
 	}
 
 	public void update(float timeDelta) {
-		entityList.update(timeDelta);
+		Iterator<BaseEntity<T>> iterator = entityList.getEntities().iterator();
+
+		while (iterator.hasNext()) {
+			BaseEntity<T> entity = iterator.next();
+			if (entity.markedToRemoveFromWorld()) {
+				iterator.remove();
+			} else {
+				entity.update(timeDelta);
+			}
+		}
+
+		physicsSpace.removeMarked();
 
 		if (!isStatic) {
 			physicsSpace.update(timeDelta);
@@ -32,7 +45,9 @@ public abstract class BaseWorld<T extends Vectorf<T>> {
 	 */
 	public void render(Shader shader) {
 		//physicsSpace.render();
-		entityList.render(shader);
+		for (BaseEntity<T> entity : entityList.getEntities()) {
+			entity.render(shader);
+		}
 	}
 
 	public void spawnEntity(BaseEntity<T> entity, T pos) {

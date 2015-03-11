@@ -259,6 +259,16 @@ public class PhysicsSpace<T extends Vectorf<T>> {
 
 	}
 
+	public void removeMarked() {
+		for (int i = bodies.size() - 1; i >= 0; i--) {
+			if (bodies.get(i).markedToRemoveFromWorld()) bodies.remove(i);
+		}
+
+		for (int i = staticBodys.size() - 1; i >= 0; i--) {
+			if (staticBodys.get(i).markedToRemoveFromWorld()) staticBodys.remove(i);
+		}
+	}
+
 	private void renderAABB(BoundingAABB<T> boundAABB, Vector3f offset, float r, float g, float b) {
 		glColor3f(r, g, b);
 

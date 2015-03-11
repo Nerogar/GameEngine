@@ -2,7 +2,7 @@ package de.nerogar.physics;
 
 import de.nerogar.util.Vectorf;
 
-public class PhysicsBody <T extends Vectorf<T>>{
+public class PhysicsBody<T extends Vectorf<T>> {
 	public BoundingAABB<T> bounding;
 	private T position;
 
@@ -16,6 +16,8 @@ public class PhysicsBody <T extends Vectorf<T>>{
 
 	private boolean isStatic;
 	private boolean[] staticAxis;
+
+	private boolean removeFromWorld;
 
 	public PhysicsBody(BoundingAABB<T> bounding, T position) {
 		this.bounding = bounding;
@@ -34,7 +36,7 @@ public class PhysicsBody <T extends Vectorf<T>>{
 	public boolean intersects(PhysicsBody<T> body) {
 		return bounding.intersects(body.bounding, position, body.position);
 	}
-	
+
 	public boolean intersects(T point) {
 		return bounding.intersects(point, position);
 	}
@@ -81,6 +83,18 @@ public class PhysicsBody <T extends Vectorf<T>>{
 
 	public boolean isStaticInAxis(int axis) {
 		return (isStatic) ? true : staticAxis[axis];
+	}
+
+	public void removeFromWorld() {
+		removeFromWorld = true;
+	}
+
+	protected void resetRemoveFromWorld() {
+		removeFromWorld = false;
+	}
+
+	public boolean markedToRemoveFromWorld() {
+		return removeFromWorld;
 	}
 
 }
