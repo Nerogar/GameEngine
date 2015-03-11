@@ -13,21 +13,17 @@ public class EntityList<T extends Vectorf<T>> {
 		entities = new ArrayList<BaseEntity<T>>();
 	}
 
-	public List<UpdateEvent> update(float timeDelta) {
+	public void update(float timeDelta) {
 		Iterator<BaseEntity<T>> iterator = entities.iterator();
-
-		List<UpdateEvent> events = new ArrayList<UpdateEvent>();
 
 		while (iterator.hasNext()) {
 			BaseEntity<T> entity = iterator.next();
 			if (entity.markedToRemoveFromWorld()) {
 				iterator.remove();
 			} else {
-				entity.update(timeDelta, events);
+				entity.update(timeDelta);
 			}
 		}
-
-		return events;
 	}
 
 	public void render(Shader shader) {

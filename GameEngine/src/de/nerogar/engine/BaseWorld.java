@@ -1,7 +1,5 @@
 package de.nerogar.engine;
 
-import java.util.List;
-
 import de.nerogar.engine.entity.BaseEntity;
 import de.nerogar.physics.PhysicsSpace;
 import de.nerogar.render.Shader;
@@ -18,16 +16,20 @@ public abstract class BaseWorld<T extends Vectorf<T>> {
 		entityList = new EntityList<T>();
 	}
 
-	public List<UpdateEvent> update(float timeDelta) {
-		List<UpdateEvent> events = entityList.update(timeDelta);
+	public void update(float timeDelta) {
+		entityList.update(timeDelta);
 
 		if (!isStatic) {
 			physicsSpace.update(timeDelta);
 		}
-
-		return events;
 	}
 
+	/**
+	 * Calls <code>.render(shader)</code> on every entity.
+	 * Override this method if you want to handle rendering yourself.
+	 * 
+	 * @param shader the currently active shader
+	 */
 	public void render(Shader shader) {
 		//physicsSpace.render();
 		entityList.render(shader);

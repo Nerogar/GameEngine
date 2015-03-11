@@ -1,9 +1,6 @@
 package de.nerogar.engine.entity;
 
-import java.util.List;
-
 import de.nerogar.engine.BaseWorld;
-import de.nerogar.engine.UpdateEvent;
 import de.nerogar.physics.BoundingAABB;
 import de.nerogar.physics.PhysicsBody;
 import de.nerogar.render.Shader;
@@ -30,7 +27,7 @@ public abstract class BaseEntity<T extends Vectorf<T>> extends PhysicsBody<T> {
 		return id;
 	}
 
-	public abstract void update(float timeDelta, List<UpdateEvent> events);
+	public abstract void update(float timeDelta);
 
 	public abstract void render(Shader shader);
 

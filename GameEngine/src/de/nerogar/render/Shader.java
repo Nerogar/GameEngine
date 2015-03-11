@@ -100,6 +100,10 @@ public class Shader {
 
 	//end uniforms
 
+	protected int getShaderHandle() {
+		return shaderHandle;
+	}
+
 	public void reCompile() {
 		if (compiled) {
 			cleanup();
@@ -164,9 +168,9 @@ public class Shader {
 				line = line.trim();
 				if (line.startsWith("#insert ")) {
 					line = folder + line.substring(8);
-					
+
 					text.append(readFile(line));
-					
+
 				} else {
 					text.append(line).append("\n");
 				}
