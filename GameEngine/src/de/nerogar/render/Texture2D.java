@@ -130,7 +130,7 @@ public class Texture2D {
 
 	public void cleanup() {
 		glDeleteTextures(id);
-		TextureLoader.unloadTexture(filename);
+		Texture2DLoader.unloadTexture(filename);
 		initialized = false;
 	}
 

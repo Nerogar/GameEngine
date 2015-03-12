@@ -13,7 +13,7 @@ import org.lwjgl.BufferUtils;
 import de.nerogar.render.Texture2D.DataType;
 import de.nerogar.render.Texture2D.InterpolationType;
 
-public class TextureLoader {
+public class Texture2DLoader {
 
 	private static HashMap<String, Texture2D> textureMap = new HashMap<String, Texture2D>();
 
