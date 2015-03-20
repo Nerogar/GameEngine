@@ -92,6 +92,7 @@ public class ServerThread extends Thread {
 
 	private void addPendingConnection(Connection conn) {
 		conn.send(new PacketConnectionInfo(Packets.NETWORKING_VERSION));
+		conn.flush();
 		pendingConnections.add(conn);
 	}
 

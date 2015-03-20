@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import de.nerogar.network.packets.Packet;
+import de.nerogar.network.packets.PacketConnectionInfo;
 
 public class Connection {
 
@@ -20,12 +21,18 @@ public class Connection {
 		this.socket = socket;
 		this.send = new SenderThread(socket);
 		this.recv = new ReceiverThread(socket, send);
+		send.send(new PacketConnectionInfo(Packets.NETWORKING_VERSION));
+		flush();
 	}
 
 	public void send(Packet packet) {
 		send.send(packet);
 	}
 
+	public void flush(){
+		send.flush();
+	}
+	
 	public ArrayList<Packet> get(int channelID) {
 		ArrayList<Packet> packets = new ArrayList<Packet>();
 		ArrayList<Packet> availablePackets = recv.getPackets();

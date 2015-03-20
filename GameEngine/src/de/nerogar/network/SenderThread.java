@@ -11,6 +11,10 @@ public class SenderThread extends Thread {
 	private Socket socket;
 	private ArrayList<Packet> packets = new ArrayList<Packet>();
 
+	private DataOutputStream stream;
+
+	private boolean shouldFlush;
+
 	public SenderThread(Socket socket) {
 		setName("Sender Thread for " + socket.toString());
 		this.socket = socket;
@@ -18,15 +22,23 @@ public class SenderThread extends Thread {
 		this.start();
 	}
 
+	public void flush() {
+		shouldFlush = true;
+	}
+
 	@Override
 	public void run() {
+		try {
+			stream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
 
-		try (DataOutputStream stream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()))) {
 			while (!isInterrupted()) {
 				synchronized (packets) {
 
 					if (packets.isEmpty()) {
-						stream.flush();
+						if (shouldFlush) {
+							stream.flush();
+							shouldFlush = false;
+						}
 						packets.wait();
 					}
 					for (Packet packet : packets) {
@@ -45,6 +57,9 @@ public class SenderThread extends Thread {
 
 				}
 			}
+
+			stream.close();
+
 		} catch (InterruptedException e) {
 			interrupt();
 			// System.err.println("InterruptedException in SenderThread");
