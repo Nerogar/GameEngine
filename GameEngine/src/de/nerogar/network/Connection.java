@@ -11,31 +11,45 @@ import de.nerogar.network.packets.PacketConnectionInfo;
 public class Connection {
 
 	private Socket socket;
-	private ReceiverThread recv;
-	private SenderThread send;
+	private ReceiverThread receiver;
+	private SenderThread sender;
 
 	public Connection(Socket socket) {
-		if (socket == null) {
-			return;
-		}
+		if (socket == null) { return; }
 		this.socket = socket;
-		this.send = new SenderThread(socket);
-		this.recv = new ReceiverThread(socket, send);
-		send.send(new PacketConnectionInfo(Packets.NETWORKING_VERSION));
-		flush();
+		this.sender = new SenderThread(socket);
+		this.receiver = new ReceiverThread(socket, sender);
+		sender.send(new PacketConnectionInfo(Packets.NETWORKING_VERSION));
+		flushPackets();
 	}
 
 	public void send(Packet packet) {
-		send.send(packet);
+		sender.send(packet);
 	}
 
-	public void flush(){
-		send.flush();
+	/**
+	 * flush the packet list.
+	 * (actually send it)
+	 */
+	public void flushPackets() {
+		sender.flush();
 	}
-	
-	public ArrayList<Packet> get(int channelID) {
+
+	/**
+	 * @param discardOld discard previously polled packets
+	 */
+	public void pollPackets(boolean discardOld) {
+		if (discardOld) discardPackets();
+		receiver.pollPackets();
+	}
+
+	private void discardPackets(){
+		receiver.discardPackets();
+	}
+
+	public ArrayList<Packet> getPackets(int channelID) {
 		ArrayList<Packet> packets = new ArrayList<Packet>();
-		ArrayList<Packet> availablePackets = recv.getPackets();
+		ArrayList<Packet> availablePackets = receiver.getPackets();
 		synchronized (availablePackets) {
 			for (Iterator<Packet> iter = availablePackets.iterator(); iter.hasNext();) {
 				Packet p = iter.next();
@@ -61,9 +75,7 @@ public class Connection {
 	}
 
 	public boolean isClosed() {
-		if (socket == null) {
-			return true;
-		}
+		if (socket == null) { return true; }
 		return socket.isClosed();
 	}
 

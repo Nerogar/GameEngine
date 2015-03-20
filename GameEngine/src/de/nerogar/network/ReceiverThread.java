@@ -14,6 +14,7 @@ public class ReceiverThread extends Thread {
 	private Socket socket;
 	private SenderThread send;
 	private ArrayList<Packet> packets = new ArrayList<Packet>();
+	private ArrayList<Packet> polledPackets = new ArrayList<Packet>();
 
 	public ReceiverThread(Socket socket, SenderThread send) {
 		setName("Reveiver Thread for " + socket.toString());
@@ -69,8 +70,19 @@ public class ReceiverThread extends Thread {
 		}
 	}
 
+	public void pollPackets() {
+		synchronized (packets) {
+			polledPackets.addAll(packets);
+			packets.clear();
+		}
+	}
+
 	public ArrayList<Packet> getPackets() {
-		return packets;
+		return polledPackets;
+	}
+
+	public void discardPackets() {
+		polledPackets.clear();
 	}
 
 }

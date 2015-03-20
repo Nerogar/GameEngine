@@ -55,7 +55,8 @@ public class ServerThread extends Thread {
 				continue;
 			}
 
-			ArrayList<Packet> connectionPackets = conn.get(Packets.SYSTEM_PACKET_CHANNEL);
+			conn.pollPackets(true);
+			ArrayList<Packet> connectionPackets = conn.getPackets(Packets.SYSTEM_PACKET_CHANNEL);
 
 			// The only CONNECTION_INFO packet can be ConnectionInfo. If that's not the case, deal with the ClassCastException and fix it.
 			// Also ignore any additional packets. Just the first ConnectionInfo packet gets processed
@@ -91,8 +92,8 @@ public class ServerThread extends Thread {
 	}
 
 	private void addPendingConnection(Connection conn) {
-		conn.send(new PacketConnectionInfo(Packets.NETWORKING_VERSION));
-		conn.flush();
+		//conn.send(new PacketConnectionInfo(Packets.NETWORKING_VERSION));
+		//conn.flushPackets();
 		pendingConnections.add(conn);
 	}
 
