@@ -24,6 +24,10 @@ public class SenderThread extends Thread {
 
 	public void flush() {
 		shouldFlush = true;
+
+		synchronized (packets) {
+			packets.notify();
+		}
 	}
 
 	@Override
