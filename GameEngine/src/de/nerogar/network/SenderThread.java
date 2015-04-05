@@ -3,6 +3,7 @@ package de.nerogar.network;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 
 import de.nerogar.network.packets.Packet;
 
@@ -36,6 +37,8 @@ public class SenderThread extends Thread {
 			stream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
 
 			while (!isInterrupted()) {
+
+				List<Packet> sendPackets = new ArrayList<Packet>();
 				synchronized (packets) {
 
 					if (packets.isEmpty()) {
@@ -45,21 +48,27 @@ public class SenderThread extends Thread {
 						}
 						packets.wait();
 					}
-					for (Packet packet : packets) {
-						try {
-							stream.writeInt(Packets.byClass(packet.getClass()).getID());
-							byte[] data = packet.toByteArray();
-							stream.writeInt(data.length);
-							stream.write(data);
-						} catch (IOException e) {
-							System.err.println("Could not send packet " + packet.toString());
-							// e.printStackTrace();
-						}
 
+					for (Packet packet : packets) {
+						sendPackets.add(packet);
 					}
 					packets.clear();
+				}
+
+				for (Packet packet : sendPackets) {
+					try {
+						stream.writeInt(Packets.byClass(packet.getClass()).getID());
+						byte[] data = packet.toByteArray();
+						stream.writeInt(data.length);
+						stream.write(data);
+					} catch (IOException e) {
+						System.err.println("Could not send packet " + packet.toString());
+						// e.printStackTrace();
+					}
 
 				}
+				packets.clear();
+
 			}
 
 			stream.close();
