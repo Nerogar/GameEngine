@@ -67,7 +67,6 @@ public class SenderThread extends Thread {
 					}
 
 				}
-				packets.clear();
 
 			}
 
